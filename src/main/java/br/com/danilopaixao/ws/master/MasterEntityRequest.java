@@ -1,4 +1,4 @@
-package br.com.danilopaixao.ws.process;
+package br.com.danilopaixao.ws.master;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import br.com.danilopaixao.ws.legal.advice.LegalAdviceRequest;
+import br.com.danilopaixao.ws.detail.DetailEntityRequest;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ProcessRequest implements Serializable{
+public class MasterEntityRequest implements Serializable{
 	/**
 	 * 
 	 */
@@ -23,23 +23,17 @@ public class ProcessRequest implements Serializable{
 	private String code;
 	private String summary;
 	private String description;
-	private Long idUserCreatedBy;
-	private Long idUserFinishedBy;
-	private List<LegalAdviceRequest> legalAdvices;
+	private List<DetailEntityRequest> detailEntityRequests;
 	
 	@JsonCreator
-	public ProcessRequest(
+	public MasterEntityRequest(
 			@JsonProperty("code") final String code,
 			@JsonProperty("summary") final String summary,
 			@JsonProperty("description") final String description,
-			@JsonProperty("idUserCreatedBy") final Long idUserCreatedBy,
-			@JsonProperty("idUserFinishedBy") final Long idUserFinishedBy,
-			@JsonProperty("legalAdvices") final List<LegalAdviceRequest> legalAdvices) {
+			@JsonProperty("detailEntity") final List<DetailEntityRequest> detailEntityRequests) {
 		this.code = code;
 		this.summary = summary;
 		this.description = description;
-		this.idUserCreatedBy = idUserCreatedBy;
-		this.idUserFinishedBy = idUserFinishedBy;
-		this.legalAdvices = legalAdvices;
+		this.detailEntityRequests = detailEntityRequests;
 	}
 }

@@ -4,7 +4,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
-            tableName: users
+            tableName: user
             columns:
               - column:
                   name: id
@@ -35,15 +35,16 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status
-                  type: varchar(55)
+                  type: varchar(15)
                   constraints:
                     nullable: false
+                    
   - changeSet:
-      id: create-processes-20180826
+      id: create-master-20180826
       author: danilo.paixao
       changes:
         - createTable: 
-            tableName: processes
+            tableName: master
             columns:
               - column:
                   name: id
@@ -67,34 +68,13 @@ databaseChangeLog:
                   type: varchar(500)
                   constraints:
                     nullable: false
-              - column:
-                  name: created_by
-                  type: bigint
-                  constraints:
-                    nullable: false
-              - column:
-                  name: finished_by
-                  type: bigint
-                  constraints:
-                    nullable: true
-        - addForeignKeyConstraint: 
-            constraintName: fk_processes_users_created_by
-            baseColumnNames: created_by
-            baseTableName: processes
-            referencedColumnNames: id
-            referencedTableName: users
-        - addForeignKeyConstraint: 
-            constraintName: fk_processes_users_finished_by
-            baseColumnNames: finished_by
-            baseTableName: processes
-            referencedColumnNames: id
-            referencedTableName: users
+
   - changeSet:
-      id: create-legal-advices-20180826
+      id: create-detail--20180826
       author: danilo.paixao
       changes:
         - createTable: 
-            tableName: legal_advices
+            tableName: detail
             columns:
               - column:
                   name: id
@@ -104,7 +84,7 @@ databaseChangeLog:
                     primaryKey: true
                     autoIncrement: true
               - column:
-                  name: id_process
+                  name: id_master
                   type: bigint
                   constraints:
                     nullable: false
@@ -113,72 +93,40 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: true
-              - column:
-                  name: created_by
-                  type: bigint
-                  constraints:
-                    nullable: false
-              - column:
-                  name: finished_by
-                  type: bigint
-                  constraints:
-                    nullable: true
-              - column:
-                  name: responsable_for
-                  type: bigint
-                  constraints:
-                    nullable: false
         - addForeignKeyConstraint: 
-            constraintName: fk_legal_advices_users_created_by
-            baseColumnNames: created_by
-            baseTableName: legal_advices
+            constraintName: fk_detail_master_id_master
+            baseColumnNames: id_master
+            baseTableName: detail
             referencedColumnNames: id
-            referencedTableName: users
-        - addForeignKeyConstraint: 
-            constraintName: fk_legal_advices_users_finished_by
-            baseColumnNames: finished_by
-            baseTableName: legal_advices
-            referencedColumnNames: id
-            referencedTableName: users
-        - addForeignKeyConstraint: 
-            constraintName: fk_legal_advices_users_responsable_for
-            baseColumnNames: responsable_for
-            baseTableName: legal_advices
-            referencedColumnNames: id
-            referencedTableName: users
-        - addForeignKeyConstraint: 
-            constraintName: fk_legal_advices_processes_id_process
-            baseColumnNames: id_process
-            baseTableName: legal_advices
-            referencedColumnNames: id
-            referencedTableName: processes
+            referencedTableName: master
+            
   - changeSet:
       id: initLoad-user
       author: danilo.paixao
       changes:
         - loadData:
             encoding: UTF-8
-            file: db/changelog/v1/users.csv
+            file: db/changelog/v1/user.csv
             schemaName: public
             separator: ","
-            tableName: users
+            tableName: user
   - changeSet:
-      id: initLoad-process
+      id: initLoad-master
       author: danilo.paixao
       changes:
         - loadData:
             encoding: UTF-8
-            file: db/changelog/v1/process.csv
+            file: db/changelog/v1/master.csv
             schemaName: public
             separator: ","
-            tableName: processes
+            tableName: master
   - changeSet:
-      id: initLoad-legal-advice
+      id: initLoad-detail
       author: danilo.paixao
       changes:
         - loadData:
             encoding: UTF-8
-            file: db/changelog/v1/legaladvice.csv
+            file: db/changelog/v1/detail.csv
             schemaName: public
             separator: ","
-            tableName: legal_advices
+            tableName: detail

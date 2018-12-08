@@ -1,4 +1,4 @@
-package br.com.danilopaixao.ws.legal.advice;
+package br.com.danilopaixao.ws.detail;
 
 import java.io.Serializable;
 
@@ -13,8 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.com.danilopaixao.ws.process.Process;
-import br.com.danilopaixao.ws.user.User;
+import br.com.danilopaixao.ws.master.MasterEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,8 +26,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="legal_advices")
-public class LegalAdvice implements Serializable{
+@Table(name="detail")
+public class DetailEntity implements Serializable{
 
 	/**
 	 * 
@@ -43,22 +42,9 @@ public class LegalAdvice implements Serializable{
 	@Column(name = "description")
 	private String description;
 	
-	//@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "created_by")
-	private User userCreatedBy;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "finished_by")
-	private User userFinishedBy;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "responsable_for")
-	private User userResponsableFor;
-	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	@JoinColumn(name = "id_process", referencedColumnName="id", nullable = false, updatable = true, insertable = true)
-	private Process process;
+	@JoinColumn(name = "id_master", referencedColumnName="id", nullable = false, updatable = true, insertable = true)
+	private MasterEntity master;
 	
 	
 }

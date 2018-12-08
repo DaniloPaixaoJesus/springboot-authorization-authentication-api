@@ -1,4 +1,4 @@
-package br.com.danilopaixao.ws.process;
+package br.com.danilopaixao.ws.master;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import br.com.danilopaixao.ws.legal.advice.LegalAdvice;
+import br.com.danilopaixao.ws.detail.DetailEntity;
 import br.com.danilopaixao.ws.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,8 +29,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="processes")
-public class Process implements Serializable{
+@Table(name="master")
+public class MasterEntity implements Serializable{
 
 	/**
 	 * 
@@ -51,16 +51,8 @@ public class Process implements Serializable{
 	@Column(name = "description")
 	private String description;
 	
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
-	private User userCreatedBy;
-	
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "finished_by", nullable = true, referencedColumnName = "id")
-	private User userFinishedBy;
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "process")
-	//@JoinColumn(name = "id_process")
-	private List<LegalAdvice> legalAdvices;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "master")
+	//@JoinColumn(name = "id_master")
+	private List<DetailEntity> details;
 	
 }
