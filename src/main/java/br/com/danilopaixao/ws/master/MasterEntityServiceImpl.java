@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.danilopaixao.ws.detail.DetailEntity;
-import br.com.danilopaixao.ws.detail.DetailEntityResponse;
+import br.com.danilopaixao.ws.detail.DetailResponse;
 import br.com.danilopaixao.ws.user.User;
 import br.com.danilopaixao.ws.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ class MasterEntityServiceImpl implements MasterEntityService {
 	private UserService userService;
 	
 	@Override
-	public MasterEntityResponse save(MasterEntityRequest processRequest) {
+	public MasterResponse save(MasterRequest processRequest) {
 		log.info("save process => " + processRequest);
 		MasterEntity master = MasterEntity.builder()
 				.code(processRequest.getCode())
@@ -54,7 +54,7 @@ class MasterEntityServiceImpl implements MasterEntityService {
 				).collect(Collectors.toList());
 		master.setDetails(legalAdvices);
 		this.repository.save(master);
-		return MasterEntityResponse
+		return MasterResponse
 					.builder()
 					.id(master.getId())
 					.code(master.getCode())
@@ -69,14 +69,14 @@ class MasterEntityServiceImpl implements MasterEntityService {
 	}
 	
 	@Override
-	public MasterEntityResponse save(Long id, MasterEntityRequest processRequest) {
+	public MasterResponse save(Long id, MasterRequest processRequest) {
 		log.info("save process", processRequest);
 		MasterEntity process = this.repository.findOne(id);
 		process.setSummary(processRequest.getSummary());
 		process.setCode(processRequest.getCode());
 		process.setDescription(processRequest.getDescription());
 		this.repository.save(process);
-		return MasterEntityResponse
+		return MasterResponse
 					.builder()
 					.id(process.getId())
 					.code(process.getCode())
@@ -87,9 +87,9 @@ class MasterEntityServiceImpl implements MasterEntityService {
 	}
 	
 	@Override
-	public MasterEntityResponse getById(Long id) {
+	public MasterResponse getById(Long id) {
 		MasterEntity master = this.repository.findOne(id);
-		return MasterEntityResponse.builder()
+		return MasterResponse.builder()
 				.id(master.getId())
 				.code(master.getCode())
 				.summary(master.getSummary())
@@ -97,7 +97,7 @@ class MasterEntityServiceImpl implements MasterEntityService {
 				.details(master.getDetails()
 						.stream()
 						.map(
-							l->DetailEntityResponse
+							l->DetailResponse
 									.builder()
 									.id(l.getId())
 									.description(l.getDescription())
@@ -107,11 +107,11 @@ class MasterEntityServiceImpl implements MasterEntityService {
 	}
 	
 	@Override
-	public List<MasterEntityResponse> getByAllMasterEntity() {
+	public List<MasterResponse> getByAllMasterEntity() {
 		return this.repository
 				.findAll()
 				.stream()
-				.map(p -> MasterEntityResponse.builder()
+				.map(p -> MasterResponse.builder()
 								.id(p.getId())
 								.code(p.getCode())
 								.summary(p.getSummary())
@@ -119,7 +119,7 @@ class MasterEntityServiceImpl implements MasterEntityService {
 								.details(p.getDetails()
 										.stream()
 										.map(
-											l->DetailEntityResponse
+											l->DetailResponse
 													.builder()
 													.id(l.getId())
 													.description(l.getDescription())

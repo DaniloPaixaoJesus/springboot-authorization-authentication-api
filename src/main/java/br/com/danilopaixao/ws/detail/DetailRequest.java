@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DetailEntityRequest implements Serializable{
+public class DetailRequest implements Serializable{
 
 	/**
 	 * 
@@ -24,7 +24,7 @@ public class DetailEntityRequest implements Serializable{
 	private String description;
 	
 	@JsonCreator
-	public DetailEntityRequest(
+	public DetailRequest(
 			@JsonProperty("masterId") final Long masterId,
 			@JsonProperty("description") final String description) {
 		this.masterId = masterId;

@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface DetailEntityService {
 
-	DetailEntityResponse save(DetailEntityRequest process);
-	DetailEntityResponse save(Long id, DetailEntityRequest process);
-	DetailEntityResponse getById(Long id);
-	List<DetailEntityResponse> getAllDetailEntity();
+	DetailResponse save(DetailRequest process);
+	DetailResponse save(Long id, DetailRequest process);
+	DetailResponse getById(Long id);
+	List<DetailResponse> getAllDetailEntity();
 
 }

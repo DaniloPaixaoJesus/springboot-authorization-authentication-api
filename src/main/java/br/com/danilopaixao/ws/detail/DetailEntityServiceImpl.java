@@ -29,7 +29,7 @@ class DetailEntityServiceImpl implements DetailEntityService {
 	private UserService userService;
 	
 	@Override
-	public DetailEntityResponse save(DetailEntityRequest detailEntityRequest) {
+	public DetailResponse save(DetailRequest detailEntityRequest) {
 		log.info("save detail => " + detailEntityRequest);
 		final MasterEntity master = masterEntityService.getMasterEntityById(Long.valueOf(detailEntityRequest.getMasterId()));
 		DetailEntity legalAdvice = DetailEntity.builder()
@@ -37,7 +37,7 @@ class DetailEntityServiceImpl implements DetailEntityService {
 				.description(detailEntityRequest.getDescription())
 				.build();
 		legalAdvice = this.repository.save(legalAdvice);	
-		return DetailEntityResponse
+		return DetailResponse
 				.builder()
 				.id(legalAdvice.getId())
 				.masterId(legalAdvice.getMaster().getId())
@@ -50,7 +50,7 @@ class DetailEntityServiceImpl implements DetailEntityService {
 	}
 	
 	@Override
-	public DetailEntityResponse save(Long id, DetailEntityRequest detailRequest) {
+	public DetailResponse save(Long id, DetailRequest detailRequest) {
 		log.info("save detail", detailRequest);
 		final MasterEntity master = masterEntityService.getMasterEntityById(Long.valueOf(detailRequest.getMasterId()));
 		
@@ -58,7 +58,7 @@ class DetailEntityServiceImpl implements DetailEntityService {
 		detail.setMaster(master);
 		detail.setDescription(detailRequest.getDescription());
 		this.repository.save(detail);
-		return DetailEntityResponse
+		return DetailResponse
 					.builder()
 					.id(detail.getId())
 					.masterId(detail.getMaster().getId())
@@ -67,9 +67,9 @@ class DetailEntityServiceImpl implements DetailEntityService {
 	}
 	
 	@Override
-	public DetailEntityResponse getById(Long id) {
+	public DetailResponse getById(Long id) {
 		DetailEntity legalAdvice = this.repository.findOne(id);
-		return DetailEntityResponse.builder()
+		return DetailResponse.builder()
 				.id(legalAdvice.getId())
 				.masterId(legalAdvice.getMaster().getId())
 				.description(legalAdvice.getDescription())
@@ -77,11 +77,11 @@ class DetailEntityServiceImpl implements DetailEntityService {
 	}
 	
 	@Override
-	public List<DetailEntityResponse> getAllDetailEntity() {
+	public List<DetailResponse> getAllDetailEntity() {
 		return this.repository
 				.findAll()
 				.stream()
-				.map(l -> DetailEntityResponse.builder()
+				.map(l -> DetailResponse.builder()
 								.id(l.getId())
 								.masterId(l.getMaster().getId())
 								.description(l.getDescription())

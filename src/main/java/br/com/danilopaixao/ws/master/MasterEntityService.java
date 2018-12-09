@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface MasterEntityService {
 
-	MasterEntityResponse save(MasterEntityRequest process);
-	MasterEntityResponse save(Long id, MasterEntityRequest process);
-	MasterEntityResponse getById(Long id);
-	List<MasterEntityResponse> getByAllMasterEntity();
+	MasterResponse save(MasterRequest process);
+	MasterResponse save(Long id, MasterRequest process);
+	MasterResponse getById(Long id);
+	List<MasterResponse> getByAllMasterEntity();
 	MasterEntity getMasterEntityById(Long valueOf);
 
 }

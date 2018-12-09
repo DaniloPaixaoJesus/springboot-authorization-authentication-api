@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DetailEntityResponse implements Serializable{
+public class DetailResponse implements Serializable{
 
 	/**
 	 * 
@@ -25,7 +25,7 @@ public class DetailEntityResponse implements Serializable{
 	private String description;
 	
 	@JsonCreator
-	public DetailEntityResponse(
+	public DetailResponse(
 			@JsonProperty("id") final Long id,
 			@JsonProperty("masterId") final Long masterId,
 			@JsonProperty("description") final String description) {

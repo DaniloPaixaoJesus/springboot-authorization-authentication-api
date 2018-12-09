@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.danilopaixao.ws.master.MasterEntityRequest;
-import br.com.danilopaixao.ws.master.MasterEntityResponse;
+import br.com.danilopaixao.ws.master.MasterRequest;
+import br.com.danilopaixao.ws.master.MasterResponse;
 import br.com.danilopaixao.ws.master.MasterEntityService;
 import io.swagger.annotations.ApiOperation;
 
@@ -24,36 +24,36 @@ public class MasterRestController {
 	@Autowired
 	private MasterEntityService service;
 	
-	@ApiOperation("EndPoint to get Process by ID ")
-	@GetMapping(value = "/api/v1/processes/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation("EndPoint to get Master by ID ")
+	@GetMapping(value = "/api/v1/masters/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody MasterEntityResponse getProcess(
+    public @ResponseBody MasterResponse getMaster(
     		@PathVariable(value = "id", required = true) final Long id ) {
 		return service.getById(id);
 	}	
 	
-	@ApiOperation("Endpoint to get ALL Processes")
-	@GetMapping(value = "/api/v1/processes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation("Endpoint to get ALL Masteres")
+	@GetMapping(value = "/api/v1/masters", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody List<MasterEntityResponse> getAllProcesses() {
+    public @ResponseBody List<MasterResponse> getAllMaster() {
 		return service.getByAllMasterEntity();
     }
 	
-	@ApiOperation("Endpoint to create new Process")
-	@PostMapping(value = "/api/v1/processes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation("Endpoint to create new Master")
+	@PostMapping(value = "/api/v1/masters", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody MasterEntityResponse saveProcess(
-    		@RequestBody(required = true) final MasterEntityRequest process) {
-		return service.save(process);
+    public @ResponseBody MasterResponse saveMaster(
+    		@RequestBody(required = true) final MasterRequest master) {
+		return service.save(master);
     }
 	
-	@ApiOperation("Endpoint to update a Process")
-	@PostMapping(value = "/api/v1/processes/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation("Endpoint to update a Master")
+	@PostMapping(value = "/api/v1/masters/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody MasterEntityResponse upDateProcess(
+    public @ResponseBody MasterResponse upDateMaster(
     		@PathVariable(value = "id", required = true) final Long id ,
-    		@RequestBody(required = true) final MasterEntityRequest process) {
-		return service.save(id, process);
+    		@RequestBody(required = true) final MasterRequest master) {
+		return service.save(id, master);
     }
 	
 
