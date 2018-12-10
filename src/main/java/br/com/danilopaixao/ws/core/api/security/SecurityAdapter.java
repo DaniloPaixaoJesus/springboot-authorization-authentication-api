@@ -57,7 +57,6 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
 			.and()
 			// Add a filter to validate the tokens with every request
-			//.addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 			.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
 			//securityy
 			.authorizeRequests()
