@@ -104,6 +104,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- <dependency>
+		    <groupId>com.netflix.eureka</groupId>
+		    <artifactId>eureka-client</artifactId>
+		    <version>1.9.0</version>
+		</dependency> -->
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

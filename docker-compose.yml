@@ -12,19 +12,19 @@ services:
         networks:
             - sistemaprocesso-network
 
-    api:
-        build:
-            dockerfile: ./docker/java8.dockerfile
-            context: .
-        environment:
-            - POSTGRES_HOST=postgres
-        container_name: springboot-api
-        ports:
-            - 8080:8080
-        networks:
-            - sistemaprocesso-network
-        depends_on: 
-            - "postgres"
+#    api:
+#        build:
+#            dockerfile: ./docker/java8.dockerfile
+#            context: .
+#        environment:
+#            - POSTGRES_HOST=postgres
+#        container_name: springboot-api
+#        ports:
+#            - 8080:8080
+#        networks:
+#            - sistemaprocesso-network
+#        depends_on: 
+#            - "postgres"
 
 networks: 
     sistemaprocesso-network:
