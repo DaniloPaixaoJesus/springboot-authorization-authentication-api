@@ -19,7 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityAdapter extends WebSecurityConfigurerAdapter {
+public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
@@ -57,13 +57,14 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
 			.and()
 			// Add a filter to validate the tokens with every request
+			.addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 			.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
 			//securityy
 			.authorizeRequests()
 			// allow all who are accessing "auth" service
 			.antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()  
 			// must be an admin if trying to access admin area (authentication is also required here)
-			.antMatchers("/gallery" + "/admin/**").hasRole("ADMIN")
+			.antMatchers("/api/v1/**").hasRole("ADMIN")
 			// Any other request must be authenticated
 			.anyRequest().authenticated(); 
 	}
