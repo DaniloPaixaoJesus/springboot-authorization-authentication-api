@@ -56,23 +56,26 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 			// handle an authorized attempts 
 			.exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
 			.and()
-			// Add a filter to validate the tokens with every request
-			.addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
-			.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
-			//securityy
+				// Add a filter to validate the tokens with every request
+				.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
+				.addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
+			// authorization requests config
 			.authorizeRequests()
-			// allow all who are accessing "auth" service
-			.antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()  
-			// must be an admin if trying to access admin area (authentication is also required here)
-			.antMatchers("/api/v1/**").hasRole("ADMIN")
-			// Any other request must be authenticated
-			.anyRequest().authenticated(); 
+				.antMatchers("/api/v1/**").authenticated()//.hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, jwtConfig.getSwaggerUI()).permitAll()  
+				// allow all who are accessing "auth" service
+				.antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()  
+				.antMatchers(HttpMethod.POST, "/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/**").permitAll()
+				// must be an admin if trying to access admin area (authentication is also required here)
+				// Any other request must be authenticated
+				.anyRequest().authenticated(); 
 	}
 	
 	// Spring has UserDetailsService interface, which can be overriden to provide our implementation for fetching user from database (or any other source).
 	// The UserDetailsService object is used by the auth manager to load the user from database.
 	// In addition, we need to define the password encoder also. So, auth manager can compare and verify passwords.
-	@Override
+	//@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
