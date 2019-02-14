@@ -20,21 +20,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
-    public UserDetailImpl loadUserByUsername(String email) {
-    	UserDetailImpl userDetail = new UserDetailImpl();
-    	userDetail.setEmail("danilo.paixao@gingaone.com.br");
-    	userDetail.setNome("Danilo Paixao de Jesus");
-    	userDetail.setSenha(encoder.encode("123456"));
-    	userDetail.setRoles(new ArrayList<RoleGrantedAuthority>());
-    	userDetail.getRoles().add(new RoleGrantedAuthority("ROLE_ADMIN"));
-        if(userDetail == null) {
-            throw new UsernameNotFoundException("Usuário " + email + " não foi encontrado");
-        }
-
-        return userDetail;
-    }
+//    public UserDetailImpl loadUserByUsername(String email) {
+//    	UserDetailImpl userDetail = new UserDetailImpl();
+//    	userDetail.setEmail("danilo.paixao@gingaone.com.br");
+//    	userDetail.setNome("Danilo Paixao de Jesus");
+//    	userDetail.setSenha(encoder.encode("123456"));
+//    	userDetail.setRoles(new ArrayList<RoleGrantedAuthority>());
+//    	userDetail.getRoles().add(new RoleGrantedAuthority("ROLE_ADMIN"));
+//        if(userDetail == null) {
+//            throw new UsernameNotFoundException("Usuário " + email + " não foi encontrado");
+//        }
+//
+//        return userDetail;
+//    }
     
-public UserDetails loadUserByUsername2(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		// hard coding the users. All passwords must be encoded.
 		final List<UserDetailImpl> users = Arrays.asList(
@@ -60,4 +60,5 @@ public UserDetails loadUserByUsername2(String username) throws UsernameNotFoundE
 		// If user not found. Throw this exception.
 		throw new UsernameNotFoundException("Username: " + username + " not found");
 	}
+
 }
