@@ -106,6 +106,52 @@ databaseChangeLog:
                   constraints:
                     nullable: false
   - changeSet:
+      id: create-role-profile-20190214
+      author: danilo.paixao
+      changes:
+        - createTable: 
+            schemaName: myapp
+            tableName: role_profile
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    autoIncrement: true
+              - column:
+                  name: id_role
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: id_profile
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(15)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint: 
+            constraintName: fk_role_profile_id_role
+            baseColumnNames: id_role
+            baseTableName: role_profile
+            baseTableSchemaName: myapp
+            referencedColumnNames: id
+            referencedTableName: role
+            referencedTableSchemaName: myapp
+        - addForeignKeyConstraint: 
+            constraintName: fk_role_profile_id_profile
+            baseColumnNames: id_profile
+            baseTableName: role_profile
+            baseTableSchemaName: myapp
+            referencedColumnNames: id
+            referencedTableName: profile
+            referencedTableSchemaName: myapp
+  - changeSet:
       id: create-master-20180826
       author: danilo.paixao
       changes:
