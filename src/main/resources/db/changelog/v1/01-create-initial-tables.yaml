@@ -76,6 +76,36 @@ databaseChangeLog:
                   constraints:
                     nullable: false
   - changeSet:
+      id: create-role-20190214
+      author: danilo.paixao
+      changes:
+        - createTable: 
+            schemaName: myapp
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    autoIncrement: true
+              - column:
+                  name: name
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(15)
+                  constraints:
+                    nullable: false
+  - changeSet:
       id: create-master-20180826
       author: danilo.paixao
       changes:
