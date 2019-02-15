@@ -71,7 +71,7 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody UserResponse cancelUser(
     		@PathVariable(value = "id", required = true) final Long id) {
-		return null;//this.service.save(user);
+		return this.service.inativeUser(id);
     }
 	
 

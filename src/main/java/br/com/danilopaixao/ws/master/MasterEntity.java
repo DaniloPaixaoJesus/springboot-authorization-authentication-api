@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import br.com.danilopaixao.ws.core.ContantsUtil;
 import br.com.danilopaixao.ws.detail.DetailEntity;
 import br.com.danilopaixao.ws.user.User;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="master")
+@Table(name="master", schema = ContantsUtil.DB_SCHEMA)
 public class MasterEntity implements Serializable{
 
 	/**

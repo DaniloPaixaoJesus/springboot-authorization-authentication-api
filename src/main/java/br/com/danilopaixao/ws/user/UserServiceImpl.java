@@ -62,7 +62,8 @@ class UserServiceImpl implements UserService {
 	@Override
 	public UserResponse inativeUser(Long id) {
 		User user = this.repository.findOne(id);
-		//update user to set active = false
+		user.setStatus(UserStatusEnum.INATIVO);
+		this.repository.save(user);
 		return UserResponse.builder()
 				.name(user.getName())
 				.login(user.getLogin())

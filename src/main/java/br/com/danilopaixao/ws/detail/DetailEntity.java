@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import br.com.danilopaixao.ws.core.ContantsUtil;
 import br.com.danilopaixao.ws.master.MasterEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="detail")
+@Table(name="detail", schema = ContantsUtil.DB_SCHEMA)
 public class DetailEntity implements Serializable{
 
 	/**

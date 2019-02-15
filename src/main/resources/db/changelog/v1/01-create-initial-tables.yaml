@@ -4,6 +4,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
+            schemaName: myapp
             tableName: user
             columns:
               - column:
@@ -44,6 +45,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
+            schemaName: myapp
             tableName: master
             columns:
               - column:
@@ -74,6 +76,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
+            schemaName: myapp
             tableName: detail
             columns:
               - column:
@@ -97,8 +100,10 @@ databaseChangeLog:
             constraintName: fk_detail_master_id_master
             baseColumnNames: id_master
             baseTableName: detail
+            baseTableSchemaName: myapp
             referencedColumnNames: id
             referencedTableName: master
+            referencedTableSchemaName: myapp
             
   - changeSet:
       id: initLoad-user
@@ -109,6 +114,7 @@ databaseChangeLog:
             file: db/changelog/v1/user.csv
             schemaName: public
             separator: ","
+            schemaName: myapp
             tableName: user
   - changeSet:
       id: initLoad-master
@@ -119,6 +125,7 @@ databaseChangeLog:
             file: db/changelog/v1/master.csv
             schemaName: public
             separator: ","
+            schemaName: myapp
             tableName: master
   - changeSet:
       id: initLoad-detail
@@ -129,4 +136,5 @@ databaseChangeLog:
             file: db/changelog/v1/detail.csv
             schemaName: public
             separator: ","
+            schemaName: myapp
             tableName: detail
