@@ -114,13 +114,6 @@ databaseChangeLog:
             tableName: role_profile
             columns:
               - column:
-                  name: id
-                  type: bigint
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    autoIncrement: true
-              - column:
                   name: id_role
                   type: bigint
                   constraints:
@@ -128,11 +121,6 @@ databaseChangeLog:
               - column:
                   name: id_profile
                   type: bigint
-                  constraints:
-                    nullable: false
-              - column:
-                  name: status
-                  type: varchar(15)
                   constraints:
                     nullable: false
         - addForeignKeyConstraint: 
@@ -151,6 +139,13 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: profile
             referencedTableSchemaName: myapp
+        - addPrimaryKey: 
+            tableName: role_profile
+            columnNames: id_role, id_profile
+            schemaName: myapp
+            addPrimaryKey: role_profile
+            constraintName: pk_role_profile_id_profile
+            
   - changeSet:
       id: create-master-20180826
       author: danilo.paixao
