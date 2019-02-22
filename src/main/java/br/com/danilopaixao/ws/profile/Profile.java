@@ -1,7 +1,10 @@
 package br.com.danilopaixao.ws.profile;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,9 +12,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import br.com.danilopaixao.ws.core.ContantsUtil;
+import br.com.danilopaixao.ws.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,5 +54,13 @@ public class Profile implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private ProfileStatusEnum status;
+	
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(
+			name = "role_profile",
+			joinColumns = { @JoinColumn(name="id_profile")},
+			inverseJoinColumns = { @JoinColumn(name="id_role")}
+	)
+	Set<Role> roles = new HashSet<Role>();
 	
 }
