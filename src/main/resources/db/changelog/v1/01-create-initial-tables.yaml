@@ -223,6 +223,39 @@ databaseChangeLog:
             schemaName: myapp
             tableName: user
   - changeSet:
+      id: initLoad-profile
+      author: danilo.paixao
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/v1/profile.csv
+            schemaName: public
+            separator: ","
+            schemaName: myapp
+            tableName: profile
+  - changeSet:
+      id: initLoad-role
+      author: danilo.paixao
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/v1/role.csv
+            schemaName: public
+            separator: ","
+            schemaName: myapp
+            tableName: role
+  - changeSet:
+      id: initLoad-role-profile
+      author: danilo.paixao
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/v1/role_profile.csv
+            schemaName: public
+            separator: ","
+            schemaName: myapp
+            tableName: role_profile
+  - changeSet:
       id: initLoad-master
       author: danilo.paixao
       changes:

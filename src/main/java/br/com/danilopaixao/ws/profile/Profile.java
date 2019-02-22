@@ -55,12 +55,13 @@ public class Profile implements Serializable{
 	@Column(name = "status")
 	private ProfileStatusEnum status;
 	
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany//(cascade = { CascadeType.ALL })
 	@JoinTable(
+			schema = ContantsUtil.DB_SCHEMA,
 			name = "role_profile",
 			joinColumns = { @JoinColumn(name="id_profile")},
 			inverseJoinColumns = { @JoinColumn(name="id_role")}
 	)
-	Set<Role> roles = new HashSet<Role>();
+	private Set<Role> roles = new HashSet<Role>();
 	
 }
