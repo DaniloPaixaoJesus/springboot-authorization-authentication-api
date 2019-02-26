@@ -62,7 +62,7 @@ public class Profile implements Serializable{
 	private List<Tag> tags = new ArrayList<Tag>();
 	 */
 	
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany//(cascade = { CascadeType.ALL })
 	@JoinTable(
 			schema = ContantsUtil.DB_SCHEMA,
 			name = "role_profile",
