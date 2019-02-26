@@ -18,15 +18,19 @@ public class RoleRequest implements Serializable{
 	 */
 	private static final long serialVersionUID = -3733146230737994444L;
 	
+	private Long id;
 	private String name;
 	private String description;
 	private RoleStatusEnum status;
 	
 	@JsonCreator
 	public RoleRequest(
+			@JsonProperty("id") final Long id,
 			@JsonProperty("name") final String name,
 			@JsonProperty("description") final String description,
 			@JsonProperty("status") final RoleStatusEnum status) {
+		this.id = id;
+		this.name = name;
 		this.name = name;		
 		this.description = description;
 		this.status = status;

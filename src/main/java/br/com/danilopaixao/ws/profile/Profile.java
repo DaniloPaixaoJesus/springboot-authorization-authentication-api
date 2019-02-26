@@ -1,8 +1,8 @@
 package br.com.danilopaixao.ws.profile;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,13 +55,20 @@ public class Profile implements Serializable{
 	@Column(name = "status")
 	private ProfileStatusEnum status;
 	
-	@ManyToMany//(cascade = { CascadeType.ALL })
+	/**
+	 * @ManyToMany
+	@JoinTable(name = "POST_TAG", joinColumns = { @JoinColumn(name = "POST_ID") }, 
+		inverseJoinColumns = {@JoinColumn(name="TAG_ID")})
+	private List<Tag> tags = new ArrayList<Tag>();
+	 */
+	
+	@ManyToMany(cascade = { CascadeType.ALL })
 	@JoinTable(
 			schema = ContantsUtil.DB_SCHEMA,
 			name = "role_profile",
 			joinColumns = { @JoinColumn(name="id_profile")},
 			inverseJoinColumns = { @JoinColumn(name="id_role")}
 	)
-	private Set<Role> roles = new HashSet<Role>();
+	private List<Role> roles = new ArrayList<Role>();
 	
 }

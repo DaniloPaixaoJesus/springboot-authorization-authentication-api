@@ -29,10 +29,20 @@ class ProfileServiceImpl implements ProfileService {
 				.description(profileRequest.getDescription())
 				.flAdmin(profileRequest.getFlAdmin())
 				.status(profileRequest.getStatus())
+				.roles(profileRequest.getRoles()
+						.stream()
+						.map(r -> Role.builder()
+									.id(r.getId())
+									.name(r.getName())
+									.description(r.getDescription())
+									.status(r.getStatus())
+									.build()
+						).collect(Collectors.toList()))
 				.build();
 		this.repository.save(profile);
 		return ProfileResponse
 					.builder()
+					.id(profile.getId())
 					.description(profile.getDescription())
 					.name(profile.getName())
 					.flAdmin(profile.getFlAdmin())
@@ -43,11 +53,21 @@ class ProfileServiceImpl implements ProfileService {
 	
 	@Override
 	public ProfileResponse save(Long id, ProfileRequest profileRequest) {
-		log.info("save profile", profileRequest);
+		log.info("save profile", id, profileRequest);
 		Profile profile = this.repository.findOne(id);
 		profile.setName(profileRequest.getName());
 		profile.setDescription(profileRequest.getDescription());
 		profile.setStatus(profileRequest.getStatus());
+		List<Role> roles = profileRequest.getRoles()
+											.stream()
+											.map(r -> Role.builder()
+														.id(r.getId())
+														.name(r.getName())
+														.description(r.getDescription())
+														.status(r.getStatus())
+														.build()
+											).collect(Collectors.toList());
+		profile.setRoles(roles);
 		this.repository.save(profile);
 		return ProfileResponse
 					.builder()
