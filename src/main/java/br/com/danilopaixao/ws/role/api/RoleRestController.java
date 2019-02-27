@@ -54,7 +54,8 @@ public class RoleRestController {
     public @ResponseBody RoleResponse upDateRole(
     		@PathVariable(value = "id", required = true) final Long id ,
     		@RequestBody(required = true) final RoleRequest role) {
-		return this.service.save(id, role);
+		role.setId(id);
+		return this.service.save(role);
     }
 	
 	@ApiOperation("Endpoint to inative a Role")

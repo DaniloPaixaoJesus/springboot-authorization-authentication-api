@@ -59,7 +59,25 @@ public class ProfileServiceTest {
     }
 	
 	@Test
-    public void testInsert() {
+    public void testInsertWithoutRole() {
+		
+		ProfileRequest profileRequest = ProfileRequest.builder().build();
+		profileRequest.setName("name NEW profile - junit running");
+		profileRequest.setDescription("description NEW profile - junit running");
+		profileRequest.setStatus(ProfileStatusEnum.ATIVO);
+		profileRequest.setFlAdmin("S");
+		profileRequest.setRoles(new ArrayList<RoleRequest>());
+		
+		ProfileResponse profileResponse = service.save(profileRequest);
+		
+		ProfileResponse profile = service.getById(profileResponse.getId());
+		
+        assertNotNull(profile);
+        assertEquals(profileResponse.getId(), profile.getId());
+    }
+	
+	@Test
+    public void testInsertWithRole() {
 		
 		RoleRequest role1 = RoleRequest.builder().build();
 		role1.setId(9999991L); 
@@ -81,7 +99,7 @@ public class ProfileServiceTest {
     }
 	
 	@Test
-    public void testUpdate() {
+    public void testUpdateWithRole() {
 		RoleRequest role1 = RoleRequest.builder().build();
 		role1.setId(9999991L);
 		role1.setName("name role 9999991L - junit running");
@@ -98,6 +116,27 @@ public class ProfileServiceTest {
 		profileRequest.setRoles(new ArrayList<RoleRequest>());
 		
 		profileRequest.getRoles().add(role1);
+		
+		ProfileResponse profileResponseSaved = service.save(profileRequest);
+		
+		ProfileResponse profileResponseGet = service.getById(profileResponseSaved.getId());
+		
+        assertNotNull(profileResponseGet);
+        assertEquals(profileResponseSaved.getId(), profileResponseGet.getId());
+        assertArrayEquals(profileResponseSaved.getRoles().toArray(), profileResponseGet.getRoles().toArray());
+    }
+	
+	@Test
+    public void testUpdateWithoutRole() {
+		
+		Long idProfile = 9999991L;
+		ProfileRequest profileRequest = ProfileRequest.builder().build();
+		profileRequest.setId(idProfile);
+		profileRequest.setName("name profile- junit running");
+		profileRequest.setDescription("description profile - junit running");
+		profileRequest.setStatus(ProfileStatusEnum.ATIVO);
+		profileRequest.setFlAdmin("S");
+		profileRequest.setRoles(new ArrayList<RoleRequest>());
 		
 		ProfileResponse profileResponseSaved = service.save(profileRequest);
 		

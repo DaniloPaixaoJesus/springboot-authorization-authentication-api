@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.danilopaixao.ws.profile.Profile;
+import br.com.danilopaixao.ws.profile.ProfileResponse;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -22,34 +24,34 @@ class RoleServiceImpl implements RoleService {
 	public RoleResponse save(RoleRequest roleRequest) {
 		log.info("save role => " + roleRequest);
 		Role role = Role.builder()
+				.id(roleRequest.getId())
 				.name(roleRequest.getName())
 				.description(roleRequest.getDescription())
 				.status(roleRequest.getStatus())
+				.profiles(roleRequest.getProfiles()
+						.stream()
+						.map(p -> Profile.builder()
+									.id(p.getId())
+									.name(p.getName())
+									.description(p.getDescription())
+									.status(p.getStatus())
+									.build()
+						).collect(Collectors.toList()))
 				.build();
 		this.repository.save(role);
 		return RoleResponse
 					.builder()
-					.description(role.getDescription())
-					.name(role.getName())
-					.status(role.getStatus())
-					.build();
-		
-	}
-	
-	@Override
-	public RoleResponse save(Long id, RoleRequest roleRequest) {
-		log.info("save role", roleRequest);
-		Role role = this.repository.findOne(id);
-		role.setName(roleRequest.getName());
-		role.setDescription(roleRequest.getDescription());
-		role.setStatus(roleRequest.getStatus());
-		this.repository.save(role);
-		return RoleResponse
-					.builder()
 					.id(role.getId())
-					.description(role.getDescription())
 					.name(role.getName())
+					.description(role.getDescription())
 					.status(role.getStatus())
+					.profiles(role.getProfiles().stream().map(p -> ProfileResponse
+							.builder()
+							.id(p.getId())
+							.name(p.getName())
+							.description(p.getDescription())
+							.status(p.getStatus())
+							.build()).collect(Collectors.toList()))
 					.build();
 		
 	}
@@ -61,9 +63,16 @@ class RoleServiceImpl implements RoleService {
 		this.repository.save(role);
 		return RoleResponse.builder()
 				.id(role.getId())
-				.description(role.getDescription())
 				.name(role.getName())
+				.description(role.getDescription())
 				.status(role.getStatus())
+				.profiles(role.getProfiles().stream().map(p -> ProfileResponse
+						.builder()
+						.id(p.getId())
+						.name(p.getName())
+						.description(p.getDescription())
+						.status(p.getStatus())
+						.build()).collect(Collectors.toList()))
 				.build();
 	}
 
@@ -72,9 +81,16 @@ class RoleServiceImpl implements RoleService {
 		Role role = this.repository.findOne(id);
 		return RoleResponse.builder()
 				.id(role.getId())
-				.description(role.getDescription())
 				.name(role.getName())
+				.description(role.getDescription())
 				.status(role.getStatus())
+				.profiles(role.getProfiles().stream().map(p -> ProfileResponse
+						.builder()
+						.id(p.getId())
+						.name(p.getName())
+						.description(p.getDescription())
+						.status(p.getStatus())
+						.build()).collect(Collectors.toList()))
 				.build();
 	}
 	
@@ -93,6 +109,13 @@ class RoleServiceImpl implements RoleService {
 								.name(role.getName())
 								.description(role.getDescription())
 								.status(role.getStatus())
+								.profiles(role.getProfiles().stream().map(p -> ProfileResponse
+										.builder()
+										.id(p.getId())
+										.name(p.getName())
+										.description(p.getDescription())
+										.status(p.getStatus())
+										.build()).collect(Collectors.toList()))
 								.build()
 				).collect(Collectors.toList());		
 	}
