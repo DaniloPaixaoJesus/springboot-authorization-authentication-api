@@ -1,15 +1,23 @@
 package br.com.danilopaixao.test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.danilopaixao.ws.APIRestApplication;
 import br.com.danilopaixao.ws.profile.ProfileRequest;
@@ -21,12 +29,26 @@ import br.com.danilopaixao.ws.role.RoleStatusEnum;
 
 @SpringBootTest(classes = APIRestApplication.class)
 @RunWith(SpringRunner.class)
+@Transactional(propagation=Propagation.REQUIRED)//default
 public class ProfileServiceTest {
+	
+	@PersistenceContext
+    private EntityManager em;
 	
 	@Autowired
     private ProfileService service;
 	
-	@Autowired
+	//@Before
+    public void initTest() {
+		//em.getTransaction().begin();
+    	//it is not needed because of @Transactional
+    }
+	
+	//@After
+	public void finishTest() {
+		//em.getTransaction().rollback();
+		//it is not needed because of @Transactional
+	}
 	
 	@Test
     public void testFindById() {
@@ -40,18 +62,11 @@ public class ProfileServiceTest {
     public void testInsert() {
 		
 		RoleRequest role1 = RoleRequest.builder().build();
-		//role1.setId(9999991L); //DÁ ERRO PARA ROLES JÁ EXISTENTES 
-		//Caused by: org.hibernate.PersistentObjectException: detached entity passed to persist: br.com.danilopaixao.ws.role.Role
-		// funciona quando retira o cascade ALL, porem, ele nao cria um registro novo, como faz o CASCADE.ALL
-		// analisar vantagens e desvantagens
-		// prefiro deixar SEM o CASCADE.ALL, pois, sempre será necessário criar a ROLE antes de vinculá-la ao PROFILE
-		role1.setName("name role- junit running");
-		role1.setDescription("description role - junit running");
-		role1.setStatus(RoleStatusEnum.ATIVO);
-  
+		role1.setId(9999991L); 
+		
 		ProfileRequest profileRequest = ProfileRequest.builder().build();
-		profileRequest.setName("name profile- junit running");
-		profileRequest.setDescription("description profile - junit running");
+		profileRequest.setName("name NEW profile - junit running");
+		profileRequest.setDescription("description NEW profile - junit running");
 		profileRequest.setStatus(ProfileStatusEnum.ATIVO);
 		profileRequest.setFlAdmin("S");
 		profileRequest.setRoles(new ArrayList<RoleRequest>());
@@ -65,57 +80,32 @@ public class ProfileServiceTest {
         assertEquals(profileResponse.getId(), profile.getId());
     }
 	
-	//@Test
+	@Test
     public void testUpdate() {
-		RoleRequest role6 = RoleRequest.builder().build();
-		role6.setId(6L);
-		role6.setName("name role- junit running");
-		role6.setDescription("description role - junit running");
-		role6.setStatus(RoleStatusEnum.ATIVO);
+		RoleRequest role1 = RoleRequest.builder().build();
+		role1.setId(9999991L);
+		role1.setName("name role 9999991L - junit running");
+		role1.setDescription("description role 9999991L - junit running");
+		role1.setStatus(RoleStatusEnum.ATIVO);
 		
-		RoleRequest role8 = RoleRequest.builder().build();
-		role8.setId(8L);
-		role8.setName("name role- junit running");
-		role8.setDescription("description role - junit running");
-		role8.setStatus(RoleStatusEnum.ATIVO);
-		
-		RoleRequest role10 = RoleRequest.builder().build();
-		role10.setId(10L);
-		role10.setName("name role- junit running");
-		role10.setDescription("description role - junit running");
-		role10.setStatus(RoleStatusEnum.ATIVO);
-		
-		RoleRequest role12 = RoleRequest.builder().build();
-		role12.setId(12L);
-		role12.setName("name role- junit running");
-		role12.setDescription("description role - junit running");
-		role12.setStatus(RoleStatusEnum.ATIVO);
-		
-		RoleRequest newRole = RoleRequest.builder().build();
-		newRole.setName("name role- junit running");
-		newRole.setDescription("description role - junit running");
-		newRole.setStatus(RoleStatusEnum.ATIVO);
-  
+		Long idProfile = 9999991L;
 		ProfileRequest profileRequest = ProfileRequest.builder().build();
+		profileRequest.setId(idProfile);
 		profileRequest.setName("name profile- junit running");
 		profileRequest.setDescription("description profile - junit running");
 		profileRequest.setStatus(ProfileStatusEnum.ATIVO);
 		profileRequest.setFlAdmin("S");
 		profileRequest.setRoles(new ArrayList<RoleRequest>());
 		
-		profileRequest.getRoles().add(role6);
-		profileRequest.getRoles().add(role8);
-		profileRequest.getRoles().add(role10);
-		profileRequest.getRoles().add(role12);
-		profileRequest.getRoles().add(newRole);
+		profileRequest.getRoles().add(role1);
 		
-		Long idProfile = 9999991L;
-		ProfileResponse profileResponse = service.save(idProfile, profileRequest);
+		ProfileResponse profileResponseSaved = service.save(profileRequest);
 		
-		ProfileResponse profile = service.getById(profileResponse.getId());
+		ProfileResponse profileResponseGet = service.getById(profileResponseSaved.getId());
 		
-        assertNotNull(profile);
-        assertEquals(profileResponse.getId(), profile.getId());
+        assertNotNull(profileResponseGet);
+        assertEquals(profileResponseSaved.getId(), profileResponseGet.getId());
+        assertArrayEquals(profileResponseSaved.getRoles().toArray(), profileResponseGet.getRoles().toArray());
     }
 
 

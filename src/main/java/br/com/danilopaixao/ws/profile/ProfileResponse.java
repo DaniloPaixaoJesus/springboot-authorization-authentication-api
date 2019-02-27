@@ -9,9 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import br.com.danilopaixao.ws.role.RoleResponse;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 public class ProfileResponse implements Serializable{
 
 	private static final long serialVersionUID = 2572139086998939238L;

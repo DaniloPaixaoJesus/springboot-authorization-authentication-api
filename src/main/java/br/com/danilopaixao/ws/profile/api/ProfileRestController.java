@@ -54,7 +54,8 @@ public class ProfileRestController {
     public @ResponseBody ProfileResponse upDateProfile(
     		@PathVariable(value = "id", required = true) final Long id ,
     		@RequestBody(required = true) final ProfileRequest profile) {
-		return this.service.save(id, profile);
+		profile.setId(id);
+		return this.service.save(profile);
     }
 	
 	@ApiOperation("Endpoint to inative a Profile")

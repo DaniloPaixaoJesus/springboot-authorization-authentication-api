@@ -55,14 +55,7 @@ public class Profile implements Serializable{
 	@Column(name = "status")
 	private ProfileStatusEnum status;
 	
-	/**
-	 * @ManyToMany
-	@JoinTable(name = "POST_TAG", joinColumns = { @JoinColumn(name = "POST_ID") }, 
-		inverseJoinColumns = {@JoinColumn(name="TAG_ID")})
-	private List<Tag> tags = new ArrayList<Tag>();
-	 */
-	
-	@ManyToMany//(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = { CascadeType.MERGE })
 	@JoinTable(
 			schema = ContantsUtil.DB_SCHEMA,
 			name = "role_profile",

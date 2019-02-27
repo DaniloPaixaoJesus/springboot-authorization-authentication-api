@@ -25,6 +25,7 @@ class ProfileServiceImpl implements ProfileService {
 	public ProfileResponse save(ProfileRequest profileRequest) {
 		log.info("save profile => " + profileRequest);
 		Profile profile = Profile.builder()
+				.id(profileRequest.getId())
 				.name(profileRequest.getName())
 				.description(profileRequest.getDescription())
 				.flAdmin(profileRequest.getFlAdmin())
@@ -47,35 +48,13 @@ class ProfileServiceImpl implements ProfileService {
 					.name(profile.getName())
 					.flAdmin(profile.getFlAdmin())
 					.status(profile.getStatus())
-					.build();
-		
-	}
-	
-	@Override
-	public ProfileResponse save(Long id, ProfileRequest profileRequest) {
-		log.info("save profile", id, profileRequest);
-		Profile profile = this.repository.findOne(id);
-		profile.setName(profileRequest.getName());
-		profile.setDescription(profileRequest.getDescription());
-		profile.setStatus(profileRequest.getStatus());
-		List<Role> roles = profileRequest.getRoles()
-											.stream()
-											.map(r -> Role.builder()
-														.id(r.getId())
-														.name(r.getName())
-														.description(r.getDescription())
-														.status(r.getStatus())
-														.build()
-											).collect(Collectors.toList());
-		profile.setRoles(roles);
-		this.repository.save(profile);
-		return ProfileResponse
-					.builder()
-					.id(profile.getId())
-					.description(profile.getDescription())
-					.name(profile.getName())
-					.flAdmin(profile.getFlAdmin())
-					.status(profile.getStatus())
+					.roles(profile.getRoles().stream().map(r -> RoleResponse
+							.builder()
+							.id(r.getId())
+							.name(r.getName())
+							.description(r.getDescription())
+							.status(r.getStatus())
+							.build()).collect(Collectors.toList()))
 					.build();
 		
 	}
@@ -91,6 +70,13 @@ class ProfileServiceImpl implements ProfileService {
 				.name(profile.getName())
 				.flAdmin(profile.getFlAdmin())
 				.status(profile.getStatus())
+				.roles(profile.getRoles().stream().map(r -> RoleResponse
+						.builder()
+						.id(r.getId())
+						.name(r.getName())
+						.description(r.getDescription())
+						.status(r.getStatus())
+						.build()).collect(Collectors.toList()))
 				.build();
 	}
 
@@ -99,10 +85,17 @@ class ProfileServiceImpl implements ProfileService {
 		Profile profile = this.repository.findOne(id);
 		return ProfileResponse.builder()
 				.id(profile.getId())
-				.description(profile.getDescription())
 				.name(profile.getName())
+				.description(profile.getDescription())
 				.flAdmin(profile.getFlAdmin())
 				.status(profile.getStatus())
+				.roles(profile.getRoles().stream().map(r -> RoleResponse
+															.builder()
+															.id(r.getId())
+															.name(r.getName())
+															.description(r.getDescription())
+															.status(r.getStatus())
+															.build()).collect(Collectors.toList()))
 				.build();
 	}
 	
@@ -114,16 +107,19 @@ class ProfileServiceImpl implements ProfileService {
 	@Override
 	public List<ProfileResponse> getByAllProfiles() {
 		List<Profile> result = this.repository.findAll();
-		
-		List<RoleResponse> teste = result.get(0).getRoles().stream().map(r -> RoleResponse.builder().name("TESTE").build()).collect(Collectors.toList()); //.collect(Collectors.toList());
-		
 		return result.stream().map(profile -> ProfileResponse.builder()
 								.id(profile.getId())
 								.name(profile.getName())
 								.description(profile.getDescription())
-								.status(profile.getStatus())
 								.flAdmin(profile.getFlAdmin())
-								.roles(profile.getRoles().stream().map(r -> RoleResponse.builder().name("TESTE").build()).collect(Collectors.toList()))
+								.status(profile.getStatus())
+								.roles(profile.getRoles().stream().map(r -> RoleResponse
+										.builder()
+										.id(r.getId())
+										.name(r.getName())
+										.description(r.getDescription())
+										.status(r.getStatus())
+										.build()).collect(Collectors.toList()))
 								.build()
 				).collect(Collectors.toList());		
 	}
