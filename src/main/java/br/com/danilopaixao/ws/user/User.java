@@ -55,7 +55,7 @@ public class User implements Serializable{
 	@Column(name = "status")
 	private UserStatusEnum status;
 	
-	@ManyToMany(cascade = { CascadeType.MERGE })
+	@ManyToMany//(cascade = { CascadeType.MERGE })
 	@JoinTable(
 			schema = ContantsUtil.DB_SCHEMA,
 			name = "profile_user",
