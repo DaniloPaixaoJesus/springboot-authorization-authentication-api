@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.danilopaixao.ws.profile.Profile;
+import br.com.danilopaixao.ws.profile.ProfileResponse;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -22,39 +24,39 @@ class UserServiceImpl implements UserService {
 	public UserResponse save(UserRequest userRequest) {
 		log.info("save user => " + userRequest);
 		User user = User.builder()
+				.id(userRequest.getId())
 				.name(userRequest.getName())
 				.login(userRequest.getLogin())
 				.password(userRequest.getPassword())
-				.profile(userRequest.getProfile())
 				.status(userRequest.getStatus())
+				.profiles(userRequest.getProfiles()
+							.stream()
+							.map(p -> Profile.builder()
+									.id(p.getId())
+									.name(p.getName())
+									.description(p.getDescription())
+									.status(p.getStatus())
+									.flAdmin(p.getFlAdmin())
+									.build()
+						).collect(Collectors.toList()))
 				.build();
-		this.repository.save(user);
-		return UserResponse
-					.builder()
-					.login(user.getLogin())
-					.name(user.getName())
-					.profile(user.getProfile())
-					.status(user.getStatus())
-					.build();
-		
-	}
-	
-	@Override
-	public UserResponse save(Long id, UserRequest userRequest) {
-		log.info("save user", userRequest);
-		User user = this.repository.findOne(id);
-		user.setName(userRequest.getName());
-		user.setLogin(userRequest.getLogin());
-		user.setProfile(userRequest.getProfile());
-		user.setStatus(userRequest.getStatus());
 		this.repository.save(user);
 		return UserResponse
 					.builder()
 					.id(user.getId())
 					.login(user.getLogin())
 					.name(user.getName())
-					.profile(user.getProfile())
 					.status(user.getStatus())
+					.profiles(user.getProfiles()
+							.stream()
+							.map(p -> ProfileResponse.builder()
+										.id(p.getId())
+										.name(p.getName())
+										.description(p.getDescription())
+										.status(p.getStatus())
+										.flAdmin(p.getFlAdmin())
+										.build()
+							).collect(Collectors.toList()))
 					.build();
 		
 	}
@@ -64,21 +66,45 @@ class UserServiceImpl implements UserService {
 		User user = this.repository.findOne(id);
 		user.setStatus(UserStatusEnum.INATIVO);
 		this.repository.save(user);
-		return UserResponse.builder()
-				.name(user.getName())
+		return UserResponse
+				.builder()
+				.id(user.getId())
 				.login(user.getLogin())
+				.name(user.getName())
+				.status(user.getStatus())
+				.profiles(user.getProfiles()
+							.stream()
+							.map(p -> ProfileResponse.builder()
+									.id(p.getId())
+									.name(p.getName())
+									.description(p.getDescription())
+									.status(p.getStatus())
+									.flAdmin(p.getFlAdmin())
+									.build()
+						).collect(Collectors.toList()))
 				.build();
 	}
 
 	@Override
 	public UserResponse getById(Long id) {
 		User user = this.repository.findOne(id);
-		return UserResponse.builder()
+		
+		return UserResponse
+				.builder()
 				.id(user.getId())
 				.name(user.getName())
 				.login(user.getLogin())
-				.profile(user.getProfile())
 				.status(user.getStatus())
+				.profiles(user.getProfiles()
+							.stream()
+							.map(p -> ProfileResponse.builder()
+									.id(p.getId())
+									.name(p.getName())
+									.description(p.getDescription())
+									.status(p.getStatus())
+									.flAdmin(p.getFlAdmin())
+									.build()
+						).collect(Collectors.toList()))
 				.build();
 	}
 	
@@ -96,8 +122,17 @@ class UserServiceImpl implements UserService {
 								.id(u.getId())
 								.name(u.getName())
 								.login(u.getLogin())
-								.profile(u.getProfile())
 								.status(u.getStatus())
+								.profiles(u.getProfiles()
+											.stream()
+											.map(p -> ProfileResponse.builder()
+													.id(p.getId())
+													.name(p.getName())
+													.description(p.getDescription())
+													.status(p.getStatus())
+													.flAdmin(p.getFlAdmin())
+													.build()
+										).collect(Collectors.toList()))
 								.build()
 				).collect(Collectors.toList());		
 	}

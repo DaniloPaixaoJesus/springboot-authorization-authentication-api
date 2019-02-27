@@ -30,11 +30,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: profile
-                  type: varchar(55)
-                  constraints:
-                    nullable: false
-              - column:
                   name: status
                   type: varchar(15)
                   constraints:
@@ -106,6 +101,47 @@ databaseChangeLog:
                   constraints:
                     nullable: false
   - changeSet:
+      id: create-profile-user-20190227
+      author: danilo.paixao
+      changes:
+        - createTable: 
+            schemaName: myapp
+            tableName: profile_user
+            columns:
+              - column:
+                  name: id_profile
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: id_user
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint: 
+            constraintName: fk_profile_user_id_user
+            baseColumnNames: id_user
+            baseTableName: profile_user
+            baseTableSchemaName: myapp
+            referencedColumnNames: id
+            referencedTableName: user
+            referencedTableSchemaName: myapp
+        - addForeignKeyConstraint: 
+            constraintName: fk_profile_user_id_profile
+            baseColumnNames: id_profile
+            baseTableName: profile_user
+            baseTableSchemaName: myapp
+            referencedColumnNames: id
+            referencedTableName: profile
+            referencedTableSchemaName: myapp
+        - addPrimaryKey: 
+            tableName: profile_user
+            columnNames: id_profile, id_user
+            schemaName: myapp
+            addPrimaryKey: profile_user
+            constraintName: pk_profile_user
+
+  - changeSet:
       id: create-role-profile-20190214
       author: danilo.paixao
       changes:
@@ -144,7 +180,7 @@ databaseChangeLog:
             columnNames: id_role, id_profile
             schemaName: myapp
             addPrimaryKey: role_profile
-            constraintName: pk_role_profile_id_profile
+            constraintName: pk_role_profile
             
   - changeSet:
       id: create-master-20180826
@@ -255,6 +291,17 @@ databaseChangeLog:
             separator: ","
             schemaName: myapp
             tableName: role_profile
+  - changeSet:
+      id: initLoad-profile-user
+      author: danilo.paixao
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: db/changelog/v1/profile_user.csv
+            schemaName: public
+            separator: ","
+            schemaName: myapp
+            tableName: profile_user
   - changeSet:
       id: initLoad-master
       author: danilo.paixao

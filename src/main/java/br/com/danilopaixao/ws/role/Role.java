@@ -49,7 +49,6 @@ public class Role implements Serializable{
 	@Column(name = "status")
 	private RoleStatusEnum status;
 	
-	//@ManyToMany(mappedBy="tags")
 	@ManyToMany(mappedBy = "roles")
     private List<Profile> profiles = new ArrayList<Profile>();
 	

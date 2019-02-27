@@ -1,7 +1,10 @@
 package br.com.danilopaixao.ws.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,9 +12,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import br.com.danilopaixao.ws.core.ContantsUtil;
+import br.com.danilopaixao.ws.profile.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,11 +52,16 @@ public class User implements Serializable{
 	private String password;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "profile")
-	private ProfileEnum profile;
-	
-	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private UserStatusEnum status;
+	
+	@ManyToMany(cascade = { CascadeType.MERGE })
+	@JoinTable(
+			schema = ContantsUtil.DB_SCHEMA,
+			name = "profile_user",
+			joinColumns = { @JoinColumn(name="id_user")},
+			inverseJoinColumns = { @JoinColumn(name="id_profile")}
+	)
+	private List<Profile> profiles = new ArrayList<Profile>();
 	
 }

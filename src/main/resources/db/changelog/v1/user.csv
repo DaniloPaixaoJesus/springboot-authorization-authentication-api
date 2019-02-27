@@ -1,2 +1,2 @@
-id, name,login,password,profile,status
-9999991,Danilo Paixao de Jesus,DPJESUS,senha,ADMINISTRADOR,ATIVO
+id, name,login,password,status
+9999991,Danilo Paixao de Jesus,DPJESUS,senha,ATIVO

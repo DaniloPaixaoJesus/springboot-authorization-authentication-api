@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import br.com.danilopaixao.ws.core.ContantsUtil;
 import br.com.danilopaixao.ws.role.Role;
+import br.com.danilopaixao.ws.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,6 +55,9 @@ public class Profile implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private ProfileStatusEnum status;
+	
+	@ManyToMany(mappedBy = "profiles")
+    private List<User> users = new ArrayList<User>();
 	
 	@ManyToMany(cascade = { CascadeType.MERGE })
 	@JoinTable(
