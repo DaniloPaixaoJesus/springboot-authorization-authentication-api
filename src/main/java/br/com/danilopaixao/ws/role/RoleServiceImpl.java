@@ -1,6 +1,8 @@
 package br.com.danilopaixao.ws.role;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,36 +25,9 @@ class RoleServiceImpl implements RoleService {
 	@Override
 	public RoleResponse save(RoleRequest roleRequest) {
 		log.info("save role => " + roleRequest);
-		Role role = Role.builder()
-				.id(roleRequest.getId())
-				.name(roleRequest.getName())
-				.description(roleRequest.getDescription())
-				.status(roleRequest.getStatus())
-				.profiles(roleRequest.getProfiles()
-						.stream()
-						.map(p -> Profile.builder()
-									.id(p.getId())
-									.name(p.getName())
-									.description(p.getDescription())
-									.status(p.getStatus())
-									.build()
-						).collect(Collectors.toList()))
-				.build();
+		Role role = Optional.ofNullable(roleRequest).map(mapRoleRequestToRole).orElse(null);
 		this.repository.save(role);
-		return RoleResponse
-					.builder()
-					.id(role.getId())
-					.name(role.getName())
-					.description(role.getDescription())
-					.status(role.getStatus())
-					.profiles(role.getProfiles().stream().map(p -> ProfileResponse
-							.builder()
-							.id(p.getId())
-							.name(p.getName())
-							.description(p.getDescription())
-							.status(p.getStatus())
-							.build()).collect(Collectors.toList()))
-					.build();
+		return Optional.ofNullable(role).map(mapRoleToRoleResponse).orElse(null);
 		
 	}
 	
@@ -61,37 +36,13 @@ class RoleServiceImpl implements RoleService {
 		Role role = this.repository.findOne(id);
 		role.setStatus(RoleStatusEnum.INATIVO);
 		this.repository.save(role);
-		return RoleResponse.builder()
-				.id(role.getId())
-				.name(role.getName())
-				.description(role.getDescription())
-				.status(role.getStatus())
-				.profiles(role.getProfiles().stream().map(p -> ProfileResponse
-						.builder()
-						.id(p.getId())
-						.name(p.getName())
-						.description(p.getDescription())
-						.status(p.getStatus())
-						.build()).collect(Collectors.toList()))
-				.build();
+		return Optional.ofNullable(role).map(mapRoleToRoleResponse).orElse(null);
 	}
 
 	@Override
 	public RoleResponse getById(Long id) {
 		Role role = this.repository.findOne(id);
-		return RoleResponse.builder()
-				.id(role.getId())
-				.name(role.getName())
-				.description(role.getDescription())
-				.status(role.getStatus())
-				.profiles(role.getProfiles().stream().map(p -> ProfileResponse
-						.builder()
-						.id(p.getId())
-						.name(p.getName())
-						.description(p.getDescription())
-						.status(p.getStatus())
-						.build()).collect(Collectors.toList()))
-				.build();
+		return Optional.ofNullable(role).map(mapRoleToRoleResponse).orElse(null);
 	}
 	
 	@Override
@@ -104,20 +55,42 @@ class RoleServiceImpl implements RoleService {
 		return this.repository
 				.findAll()
 				.stream()
-				.map(role -> RoleResponse.builder()
-								.id(role.getId())
-								.name(role.getName())
-								.description(role.getDescription())
-								.status(role.getStatus())
-								.profiles(role.getProfiles().stream().map(p -> ProfileResponse
-										.builder()
-										.id(p.getId())
-										.name(p.getName())
-										.description(p.getDescription())
-										.status(p.getStatus())
-										.build()).collect(Collectors.toList()))
-								.build()
-				).collect(Collectors.toList());		
+				.map(mapRoleToRoleResponse).collect(Collectors.toList());		
 	}
 	
+	public static final Function<RoleRequest, Role> mapRoleRequestToRole = roleRequest ->
+		Optional.ofNullable(roleRequest)
+				.map(role -> Role.builder()
+						.id(roleRequest.getId())
+						.name(roleRequest.getName())
+						.description(roleRequest.getDescription())
+						.status(roleRequest.getStatus())
+						.profiles(roleRequest.getProfiles()
+								.stream()
+								.map(p -> Profile.builder()
+											.id(p.getId())
+											.name(p.getName())
+											.description(p.getDescription())
+											.status(p.getStatus())
+											.build()
+								).collect(Collectors.toList()))
+						.build())
+				.orElse(null);
+	
+	public static final Function<Role, RoleResponse> mapRoleToRoleResponse = role ->
+		Optional.ofNullable(role)
+					.map(r -> RoleResponse.builder()
+							.id(role.getId())
+							.name(role.getName())
+							.description(role.getDescription())
+							.status(role.getStatus())
+							.profiles(role.getProfiles().stream().map(p -> ProfileResponse
+									.builder()
+									.id(p.getId())
+									.name(p.getName())
+									.description(p.getDescription())
+									.status(p.getStatus())
+									.build()).collect(Collectors.toList()))
+							.build())
+					.orElse(null);
 }

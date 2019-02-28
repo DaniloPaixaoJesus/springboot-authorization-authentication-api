@@ -56,7 +56,7 @@ public class RoleServiceTest {
         assertEquals(role.getId(), idRole);
     }
 	
-	//@Test
+	@Test
     public void testInsertWithProfile() {
 		
 		ProfileRequest profile1 = ProfileRequest.builder().build();
@@ -85,7 +85,7 @@ public class RoleServiceTest {
 		profile1.setDescription("description role 9999991L - junit running");
 		profile1.setStatus(ProfileStatusEnum.ATIVO);
 		
-		Long idRole = 101L;
+		Long idRole = 9999991L;
 		RoleRequest roleRequest = RoleRequest.builder().build();
 		roleRequest.setId(idRole);
 		roleRequest.setName("name role- junit running");

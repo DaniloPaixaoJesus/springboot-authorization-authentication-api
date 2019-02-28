@@ -1,6 +1,8 @@
 package br.com.danilopaixao.ws.user;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,42 +25,9 @@ class UserServiceImpl implements UserService {
 	@Override
 	public UserResponse save(UserRequest userRequest) {
 		log.info("save user => " + userRequest);
-		User user = User.builder()
-				.id(userRequest.getId())
-				.name(userRequest.getName())
-				.login(userRequest.getLogin())
-				.password(userRequest.getPassword())
-				.status(userRequest.getStatus())
-				.profiles(userRequest.getProfiles()
-							.stream()
-							.map(p -> Profile.builder()
-									.id(p.getId())
-									.name(p.getName())
-									.description(p.getDescription())
-									.status(p.getStatus())
-									.flAdmin(p.getFlAdmin())
-									.build()
-						).collect(Collectors.toList()))
-				.build();
+		User user = Optional.ofNullable(userRequest).map(mapUserRequestToUser).orElse(null);
 		this.repository.save(user);
-		return UserResponse
-					.builder()
-					.id(user.getId())
-					.login(user.getLogin())
-					.name(user.getName())
-					.status(user.getStatus())
-					.profiles(user.getProfiles()
-							.stream()
-							.map(p -> ProfileResponse.builder()
-										.id(p.getId())
-										.name(p.getName())
-										.description(p.getDescription())
-										.status(p.getStatus())
-										.flAdmin(p.getFlAdmin())
-										.build()
-							).collect(Collectors.toList()))
-					.build();
-		
+		return Optional.ofNullable(user).map(mapUserToUserResponse).orElse(null);
 	}
 	
 	@Override
@@ -66,46 +35,13 @@ class UserServiceImpl implements UserService {
 		User user = this.repository.findOne(id);
 		user.setStatus(UserStatusEnum.INATIVO);
 		this.repository.save(user);
-		return UserResponse
-				.builder()
-				.id(user.getId())
-				.login(user.getLogin())
-				.name(user.getName())
-				.status(user.getStatus())
-				.profiles(user.getProfiles()
-							.stream()
-							.map(p -> ProfileResponse.builder()
-									.id(p.getId())
-									.name(p.getName())
-									.description(p.getDescription())
-									.status(p.getStatus())
-									.flAdmin(p.getFlAdmin())
-									.build()
-						).collect(Collectors.toList()))
-				.build();
+		return Optional.ofNullable(user).map(mapUserToUserResponse).orElse(null);
 	}
 
 	@Override
 	public UserResponse getById(Long id) {
 		User user = this.repository.findOne(id);
-		
-		return UserResponse
-				.builder()
-				.id(user.getId())
-				.name(user.getName())
-				.login(user.getLogin())
-				.status(user.getStatus())
-				.profiles(user.getProfiles()
-							.stream()
-							.map(p -> ProfileResponse.builder()
-									.id(p.getId())
-									.name(p.getName())
-									.description(p.getDescription())
-									.status(p.getStatus())
-									.flAdmin(p.getFlAdmin())
-									.build()
-						).collect(Collectors.toList()))
-				.build();
+		return Optional.ofNullable(user).map(mapUserToUserResponse).orElse(null);
 	}
 	
 	@Override
@@ -118,23 +54,47 @@ class UserServiceImpl implements UserService {
 		return this.repository
 				.findAll()
 				.stream()
-				.map(u -> UserResponse.builder()
-								.id(u.getId())
-								.name(u.getName())
-								.login(u.getLogin())
-								.status(u.getStatus())
-								.profiles(u.getProfiles()
-											.stream()
-											.map(p -> ProfileResponse.builder()
-													.id(p.getId())
-													.name(p.getName())
-													.description(p.getDescription())
-													.status(p.getStatus())
-													.flAdmin(p.getFlAdmin())
-													.build()
-										).collect(Collectors.toList()))
-								.build()
-				).collect(Collectors.toList());		
+				.map(mapUserToUserResponse).collect(Collectors.toList());		
 	}
 	
+	public static final Function<UserRequest, User> mapUserRequestToUser = userRequest ->
+		Optional.ofNullable(userRequest)
+			.map(user -> User.builder()
+					.id(user.getId())
+					.name(user.getName())
+					.login(user.getLogin())
+					.password(user.getPassword())
+					.status(user.getStatus())
+					.profiles(user.getProfiles()
+								.stream()
+								.map(p -> Profile.builder()
+										.id(p.getId())
+										.name(p.getName())
+										.description(p.getDescription())
+										.status(p.getStatus())
+										.flAdmin(p.getFlAdmin())
+										.build()
+							).collect(Collectors.toList()))
+					.build()
+			).orElse(null);
+	
+	public static final Function<User, UserResponse> mapUserToUserResponse = user ->
+		Optional.ofNullable(user)
+				.map( u -> UserResponse.builder()
+						.id(u.getId())
+						.name(u.getName())
+						.login(u.getLogin())
+						.status(u.getStatus())
+						.profiles(u.getProfiles()
+									.stream()
+									.map(p -> ProfileResponse.builder()
+											.id(p.getId())
+											.name(p.getName())
+											.description(p.getDescription())
+											.status(p.getStatus())
+											.flAdmin(p.getFlAdmin())
+											.build()
+								).collect(Collectors.toList()))
+						.build()
+		).orElse(null);
 }

@@ -1,7 +1,8 @@
 package br.com.danilopaixao.ws.profile;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,38 +25,9 @@ class ProfileServiceImpl implements ProfileService {
 	@Override
 	public ProfileResponse save(ProfileRequest profileRequest) {
 		log.info("save profile => " + profileRequest);
-		Profile profile = Profile.builder()
-				.id(profileRequest.getId())
-				.name(profileRequest.getName())
-				.description(profileRequest.getDescription())
-				.flAdmin(profileRequest.getFlAdmin())
-				.status(profileRequest.getStatus())
-				.roles(profileRequest.getRoles()
-						.stream()
-						.map(r -> Role.builder()
-									.id(r.getId())
-									.name(r.getName())
-									.description(r.getDescription())
-									.status(r.getStatus())
-									.build()
-						).collect(Collectors.toList()))
-				.build();
+		Profile profile = Optional.ofNullable(profileRequest).map(mapProfileRequestToProfile).orElse(null);
 		this.repository.save(profile);
-		return ProfileResponse
-					.builder()
-					.id(profile.getId())
-					.description(profile.getDescription())
-					.name(profile.getName())
-					.flAdmin(profile.getFlAdmin())
-					.status(profile.getStatus())
-					.roles(profile.getRoles().stream().map(r -> RoleResponse
-							.builder()
-							.id(r.getId())
-							.name(r.getName())
-							.description(r.getDescription())
-							.status(r.getStatus())
-							.build()).collect(Collectors.toList()))
-					.build();
+		return Optional.ofNullable(profile).map(mapProfileToProfileResponse).orElse(null);
 		
 	}
 	
@@ -64,39 +36,13 @@ class ProfileServiceImpl implements ProfileService {
 		Profile profile = this.repository.findOne(id);
 		profile.setStatus(ProfileStatusEnum.INATIVO);
 		this.repository.save(profile);
-		return ProfileResponse.builder()
-				.id(profile.getId())
-				.description(profile.getDescription())
-				.name(profile.getName())
-				.flAdmin(profile.getFlAdmin())
-				.status(profile.getStatus())
-				.roles(profile.getRoles().stream().map(r -> RoleResponse
-						.builder()
-						.id(r.getId())
-						.name(r.getName())
-						.description(r.getDescription())
-						.status(r.getStatus())
-						.build()).collect(Collectors.toList()))
-				.build();
+		return Optional.ofNullable(profile).map(mapProfileToProfileResponse).orElse(null);
 	}
 
 	@Override
 	public ProfileResponse getById(Long id) {
 		Profile profile = this.repository.findOne(id);
-		return ProfileResponse.builder()
-				.id(profile.getId())
-				.name(profile.getName())
-				.description(profile.getDescription())
-				.flAdmin(profile.getFlAdmin())
-				.status(profile.getStatus())
-				.roles(profile.getRoles().stream().map(r -> RoleResponse
-															.builder()
-															.id(r.getId())
-															.name(r.getName())
-															.description(r.getDescription())
-															.status(r.getStatus())
-															.build()).collect(Collectors.toList()))
-				.build();
+		return Optional.ofNullable(profile).map(mapProfileToProfileResponse).orElse(null);
 	}
 	
 	@Override
@@ -107,21 +53,47 @@ class ProfileServiceImpl implements ProfileService {
 	@Override
 	public List<ProfileResponse> getByAllProfiles() {
 		List<Profile> result = this.repository.findAll();
-		return result.stream().map(profile -> ProfileResponse.builder()
-								.id(profile.getId())
-								.name(profile.getName())
-								.description(profile.getDescription())
-								.flAdmin(profile.getFlAdmin())
-								.status(profile.getStatus())
-								.roles(profile.getRoles().stream().map(r -> RoleResponse
-										.builder()
+		return result.stream().map(mapProfileToProfileResponse).collect(Collectors.toList());		
+	}
+	
+	public static final Function<ProfileRequest, Profile> mapProfileRequestToProfile = profileRequest ->
+	Optional.ofNullable(profileRequest)
+			.map(p -> Profile.builder()
+					.id(profileRequest.getId())
+					.name(profileRequest.getName())
+					.description(profileRequest.getDescription())
+					.flAdmin(profileRequest.getFlAdmin())
+					.status(profileRequest.getStatus())
+					.roles(profileRequest.getRoles()
+							.stream()
+							.map(r -> Role.builder()
 										.id(r.getId())
 										.name(r.getName())
 										.description(r.getDescription())
 										.status(r.getStatus())
-										.build()).collect(Collectors.toList()))
-								.build()
-				).collect(Collectors.toList());		
-	}
+										.build()
+							).collect(Collectors.toList()))
+					.build()
+			)
+			.orElse(null);
+	
+	public static final Function<Profile, ProfileResponse> mapProfileToProfileResponse = profile ->
+		Optional.ofNullable(profile)
+				.map(p -> ProfileResponse.builder()
+						.id(p.getId())
+						.name(p.getName())
+						.description(p.getDescription())
+						.flAdmin(p.getFlAdmin())
+						.status(p.getStatus())
+						.roles(p.getRoles().stream().map(r -> RoleResponse
+								.builder()
+								.id(r.getId())
+								.name(r.getName())
+								.description(r.getDescription())
+								.status(r.getStatus())
+								.build()).collect(Collectors.toList()))
+						.build()
+				)
+				.orElse(null);
 	
 }
