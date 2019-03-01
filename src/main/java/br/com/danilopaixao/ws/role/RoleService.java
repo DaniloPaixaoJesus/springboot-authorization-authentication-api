@@ -14,7 +14,7 @@ public interface RoleService {
 	RoleResponse getById(Long id);
 	List<RoleResponse> getByAllRoles();
 	RoleResponse inativeRole(Long id);
-	Role getUserById(Long id);
+	Role getRoleById(Long id);
 
 
 	public static final Function<RoleRequest, Role> mapRoleRequestToRole = roleRequest ->

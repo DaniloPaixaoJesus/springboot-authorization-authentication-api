@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -46,7 +47,8 @@ public class Role extends BaseEntity<Long> implements Serializable{
 	@Column(name = "status")
 	private RoleStatusEnum status;
 	
-	@ManyToMany(mappedBy = "roles")
+	@ManyToMany(mappedBy = "roles",
+	        cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Profile> profiles = new ArrayList<Profile>();
 	
 	public List<Profile> getProfiles(){

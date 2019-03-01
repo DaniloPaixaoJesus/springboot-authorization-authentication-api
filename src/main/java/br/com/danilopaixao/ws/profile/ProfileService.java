@@ -28,19 +28,7 @@ public interface ProfileService {
 							.description(profileRequest.getDescription())
 							.flAdmin(profileRequest.getFlAdmin())
 							.status(profileRequest.getStatus())
-							.roles(profileRequest.getRoles()
-											.stream()
-											.map(r -> { 
-												Role roleTmp = Role.builder()
-												//.id(r.getId())
-												.name(r.getName())
-												.description(r.getDescription())
-												.status(r.getStatus())
-												.build();
-												roleTmp.setId(r.getId());
-												return roleTmp;
-											}).collect(Collectors.toList())
-							).build();
+							.build();
 					profileTmp.setId(profileRequest.getId()); 
 					return profileTmp;
 			})

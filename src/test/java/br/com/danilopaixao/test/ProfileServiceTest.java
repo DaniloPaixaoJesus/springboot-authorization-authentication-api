@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ import br.com.danilopaixao.ws.role.RoleStatusEnum;
 
 @SpringBootTest(classes = APIRestApplication.class)
 @RunWith(SpringRunner.class)
-@Transactional(propagation=Propagation.REQUIRED)//default
+//@Transactional(propagation=Propagation.REQUIRED)//default
 public class ProfileServiceTest {
 	
 	@PersistenceContext
@@ -51,7 +52,6 @@ public class ProfileServiceTest {
 	
 	@Before
     public void initTest() {
-		//it is not needed because of @Transactional
 		//em.getTransaction().begin();
 		if(profileRequest == null) {
 			profileRequest = ProfileRequest.builder().build();
@@ -76,7 +76,7 @@ public class ProfileServiceTest {
 		
     }
 	
-	//@After
+	@After
 	public void finishTest() {
 		//em.getTransaction().rollback();
 		//it is not needed because of @Transactional
