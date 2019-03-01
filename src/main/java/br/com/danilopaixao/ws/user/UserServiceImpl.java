@@ -3,7 +3,6 @@ package br.com.danilopaixao.ws.user;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +40,17 @@ class UserServiceImpl implements UserService {
 		user.setStatus(userRequest.getStatus());
 		user.setProfiles(userRequest.getProfiles()
 							.stream()
-							.map(p -> Profile.builder()
-											.id(p.getId())
-											.name(p.getName())
-											.description(p.getDescription())
-											.status(p.getStatus())
-											.flAdmin(p.getFlAdmin())
-											.build()
+							.map(p -> { 
+										Profile profileTmp = Profile.builder()
+												//.id(p.getId())
+												.name(p.getName())
+												.description(p.getDescription())
+												.status(p.getStatus())
+												.flAdmin(p.getFlAdmin())
+												.build();
+										profileTmp.setId(p.getId());
+										return profileTmp;
+									}
 								).collect(Collectors.toList())
 							);
 		//userIni.setProfiles(userRequest.getProfiles());
@@ -93,13 +96,17 @@ class UserServiceImpl implements UserService {
 					.status(user.getStatus())
 					.profiles(user.getProfiles()
 								.stream()
-								.map(p -> Profile.builder()
-										.id(p.getId())
-										.name(p.getName())
-										.description(p.getDescription())
-										.status(p.getStatus())
-										.flAdmin(p.getFlAdmin())
-										.build()
+								.map(p -> { 
+									Profile profileTmp = Profile.builder()
+											//.id(p.getId())
+											.name(p.getName())
+											.description(p.getDescription())
+											.status(p.getStatus())
+											.flAdmin(p.getFlAdmin())
+											.build();
+									profileTmp.setId(p.getId());
+									return profileTmp;
+								}
 							).collect(Collectors.toList()))
 					.build();
 					usertmp.setId(user.getId());

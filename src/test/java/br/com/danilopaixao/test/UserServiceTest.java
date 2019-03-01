@@ -34,11 +34,6 @@ import br.com.danilopaixao.ws.user.UserStatusEnum;
 @Transactional(propagation=Propagation.REQUIRED)//default
 public class UserServiceTest {
 	
-	private final String PROFILE_NAME = "init UserServiceTest: profile created";
-	
-	private ProfileRequest profileRequest;
-	private UserRequest userRequest;
-	
 	@PersistenceContext
     private EntityManager em;
 	
@@ -47,6 +42,11 @@ public class UserServiceTest {
 	
 	@Autowired
     private ProfileService profileService;
+	
+	private final String PROFILE_NAME = "init UserServiceTest: profile created";
+	
+	private ProfileRequest profileRequest;
+	private UserRequest userRequest;
 	
 	@Before
     public void initTest() {

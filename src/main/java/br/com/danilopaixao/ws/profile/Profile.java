@@ -9,9 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,7 +17,6 @@ import javax.persistence.Table;
 import br.com.danilopaixao.ws.core.BaseEntity;
 import br.com.danilopaixao.ws.core.ContantsUtil;
 import br.com.danilopaixao.ws.role.Role;
-import br.com.danilopaixao.ws.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,17 +28,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="profile", schema = ContantsUtil.DB_SCHEMA)
-public class Profile /*extends BaseEntity<Long>*/ implements Serializable{
+public class Profile extends BaseEntity<Long> implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4835910182046216415L;
-	
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private static final long serialVersionUID = 7324091354016656912L;
 
 	@Column(name = "name")
 	private String name;
@@ -57,8 +48,8 @@ public class Profile /*extends BaseEntity<Long>*/ implements Serializable{
 	@Column(name = "status")
 	private ProfileStatusEnum status;
 	
-	@ManyToMany(mappedBy = "profiles")
-    private List<User> users = new ArrayList<User>();
+//	@ManyToMany(mappedBy = "profiles")
+//    private List<User> users = new ArrayList<User>();
 	
 	@ManyToMany(cascade = { CascadeType.MERGE })
 	@JoinTable(

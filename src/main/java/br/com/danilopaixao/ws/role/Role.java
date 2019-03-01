@@ -28,17 +28,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="role", schema = ContantsUtil.DB_SCHEMA)
-public class Role /*extends BaseEntity<Long>*/ implements Serializable{
+public class Role extends BaseEntity<Long> implements Serializable{
 
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4835910182046216415L;
-	
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private static final long serialVersionUID = 4326207161860945877L;
 
 	@Column(name = "name")
 	private String name;

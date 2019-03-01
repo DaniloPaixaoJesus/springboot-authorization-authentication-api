@@ -1,15 +1,14 @@
 package br.com.danilopaixao.test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +24,7 @@ import br.com.danilopaixao.ws.profile.ProfileResponse;
 import br.com.danilopaixao.ws.profile.ProfileService;
 import br.com.danilopaixao.ws.profile.ProfileStatusEnum;
 import br.com.danilopaixao.ws.role.RoleRequest;
+import br.com.danilopaixao.ws.role.RoleService;
 import br.com.danilopaixao.ws.role.RoleStatusEnum;
 
 @SpringBootTest(classes = APIRestApplication.class)
@@ -38,10 +38,41 @@ public class ProfileServiceTest {
 	@Autowired
     private ProfileService service;
 	
-	//@Before
+	@Autowired
+    private RoleService roleService;
+	
+	private ProfileRequest profileRequest;
+	
+	private RoleRequest roleRequest; 
+	
+	private final String PROFILE_NAME = "init ProfileServiceTest: profile created";
+	private final String ROLE_NAME = "init ProfileServiceTest: role created";
+	
+	@Before
     public void initTest() {
+		//it is not needed because of @Transactional
 		//em.getTransaction().begin();
-    	//it is not needed because of @Transactional
+		if(profileRequest == null) {
+			profileRequest = ProfileRequest.builder().build();
+			profileRequest.setName(PROFILE_NAME);
+			profileRequest.setDescription("");
+			profileRequest.setFlAdmin("S");
+			profileRequest.setStatus(ProfileStatusEnum.ATIVO);
+			profileRequest.setRoles(new ArrayList<RoleRequest>());
+			
+			ProfileResponse profileResponse = service.save(profileRequest);
+			profileRequest.setId(profileResponse.getId());
+		}
+		
+		if(roleRequest == null) {
+			roleRequest = RoleRequest.builder().build();
+			roleRequest.setName(ROLE_NAME);
+			roleRequest.setDescription("");
+			roleRequest.setStatus(RoleStatusEnum.ATIVO);
+			roleRequest.setProfiles(new ArrayList<ProfileRequest>());
+			roleService.save(roleRequest);
+		}
+		
     }
 	
 	//@After
@@ -52,61 +83,92 @@ public class ProfileServiceTest {
 	
 	@Test
     public void testFindById() {
-		Long idProfile = 9999991L;
+		Long idProfile = profileRequest.getId();
 		ProfileResponse profile = service.getById(idProfile);
 		assertNotNull(profile);
-        assertEquals(profile.getId(), idProfile);
+        assertEquals(profile.getId(), profileRequest.getId());
+        assertEquals(profile.getDescription(), profileRequest.getDescription());
+        assertEquals(profile.getFlAdmin(), profileRequest.getFlAdmin());
+        assertEquals(profile.getName(), profileRequest.getName());
+        assertEquals(profile.getStatus(), profileRequest.getStatus());
     }
 	
 	@Test
-    public void testInsertWithoutRole() {
+    public void testInsert(){
 		
-		ProfileRequest profileRequest = ProfileRequest.builder().build();
-		profileRequest.setName("name NEW profile - junit running");
-		profileRequest.setDescription("description NEW profile - junit running");
-		profileRequest.setStatus(ProfileStatusEnum.ATIVO);
-		profileRequest.setFlAdmin("S");
-		profileRequest.setRoles(new ArrayList<RoleRequest>());
+		ProfileRequest newProfileRequest = ProfileRequest.builder().build();
+		newProfileRequest.setName("name NEW profile - junit running");
+		newProfileRequest.setDescription("description NEW profile - junit running");
+		newProfileRequest.setStatus(ProfileStatusEnum.ATIVO);
+		newProfileRequest.setFlAdmin("S");
+		newProfileRequest.setRoles(new ArrayList<RoleRequest>());
 		
-		ProfileResponse profileResponse = service.save(profileRequest);
+		ProfileResponse newProfile = service.save(newProfileRequest);
 		
-		ProfileResponse profile = service.getById(profileResponse.getId());
+		ProfileResponse profile = service.getById(newProfile.getId());
 		
         assertNotNull(profile);
-        assertEquals(profileResponse.getId(), profile.getId());
+        assertEquals(newProfile.getId(), profile.getId());
+        assertEquals(newProfile.getDescription(), profile.getDescription());
+        assertEquals(newProfile.getFlAdmin(), profile.getFlAdmin());
+        assertEquals(newProfile.getName(), profile.getName());
+        assertEquals(newProfile.getStatus(), profile.getStatus());
+        assertTrue(newProfile.getRoles().size() == profile.getRoles().size());
+        
     }
 	
 	@Test
     public void testInsertWithRole() {
 		
-		RoleRequest role1 = RoleRequest.builder().build();
-		role1.setId(9999991L); 
-		
 		ProfileRequest profileRequest = ProfileRequest.builder().build();
 		profileRequest.setName("name NEW profile - junit running");
 		profileRequest.setDescription("description NEW profile - junit running");
 		profileRequest.setStatus(ProfileStatusEnum.ATIVO);
 		profileRequest.setFlAdmin("S");
 		profileRequest.setRoles(new ArrayList<RoleRequest>());
-		profileRequest.getRoles().add(role1);
+		profileRequest.getRoles().add(roleRequest);
 		
-		ProfileResponse profileResponse = service.save(profileRequest);
+		ProfileResponse newProfile = service.save(profileRequest);
 		
-		ProfileResponse profile = service.getById(profileResponse.getId());
+		ProfileResponse profile = service.getById(newProfile.getId());
 		
-        assertNotNull(profile);
-        assertEquals(profileResponse.getId(), profile.getId());
+		assertNotNull(profile);
+        assertEquals(newProfile.getId(), profile.getId());
+        assertEquals(newProfile.getDescription(), profile.getDescription());
+        assertEquals(newProfile.getFlAdmin(), profile.getFlAdmin());
+        assertEquals(newProfile.getName(), profile.getName());
+        assertEquals(newProfile.getStatus(), profile.getStatus());
+        assertTrue(newProfile.getRoles().size() == profile.getRoles().size());
+    }
+	
+	@Test
+    public void testUpdate() {
+		
+		Long idProfile = profileRequest.getId();
+		ProfileRequest profileRequest = ProfileRequest.builder().build();
+		profileRequest.setId(idProfile);
+		profileRequest.setName("name profile - UPDATED - junit running");
+		profileRequest.setDescription("description profile - UPDATED - junit running");
+		profileRequest.setStatus(ProfileStatusEnum.ATIVO);
+		profileRequest.setFlAdmin("S");
+		profileRequest.setRoles(new ArrayList<RoleRequest>());
+		
+		ProfileResponse profileResponseSaved = service.save(idProfile, profileRequest);
+		
+		ProfileResponse profileResponseGet = service.getById(profileResponseSaved.getId());
+		
+		assertNotNull(profileResponseGet);
+        assertEquals(profileResponseSaved.getId(), profileResponseGet.getId());
+        assertEquals(profileResponseSaved.getDescription(), profileResponseGet.getDescription());
+        assertEquals(profileResponseSaved.getFlAdmin(), profileResponseGet.getFlAdmin());
+        assertEquals(profileResponseSaved.getName(), profileResponseGet.getName());
+        assertEquals(profileResponseSaved.getStatus(), profileResponseGet.getStatus());
+        assertTrue(profileResponseSaved.getRoles().size() == profileResponseGet.getRoles().size());
     }
 	
 	@Test
     public void testUpdateWithRole() {
-		RoleRequest role1 = RoleRequest.builder().build();
-		role1.setId(9999991L);
-		role1.setName("name role 9999991L - junit running");
-		role1.setDescription("description role 9999991L - junit running");
-		role1.setStatus(RoleStatusEnum.ATIVO);
-		
-		Long idProfile = 9999991L;
+		Long idProfile = profileRequest.getId();
 		ProfileRequest profileRequest = ProfileRequest.builder().build();
 		profileRequest.setId(idProfile);
 		profileRequest.setName("name profile- junit running");
@@ -115,36 +177,19 @@ public class ProfileServiceTest {
 		profileRequest.setFlAdmin("S");
 		profileRequest.setRoles(new ArrayList<RoleRequest>());
 		
-		profileRequest.getRoles().add(role1);
+		profileRequest.getRoles().add(roleRequest);
 		
 		ProfileResponse profileResponseSaved = service.save(profileRequest);
 		
 		ProfileResponse profileResponseGet = service.getById(profileResponseSaved.getId());
 		
-        assertNotNull(profileResponseGet);
+		assertNotNull(profileResponseGet);
         assertEquals(profileResponseSaved.getId(), profileResponseGet.getId());
-        assertArrayEquals(profileResponseSaved.getRoles().toArray(), profileResponseGet.getRoles().toArray());
-    }
-	
-	@Test
-    public void testUpdateWithoutRole() {
-		
-		Long idProfile = 9999991L;
-		ProfileRequest profileRequest = ProfileRequest.builder().build();
-		profileRequest.setId(idProfile);
-		profileRequest.setName("name profile- junit running");
-		profileRequest.setDescription("description profile - junit running");
-		profileRequest.setStatus(ProfileStatusEnum.ATIVO);
-		profileRequest.setFlAdmin("S");
-		profileRequest.setRoles(new ArrayList<RoleRequest>());
-		
-		ProfileResponse profileResponseSaved = service.save(profileRequest);
-		
-		ProfileResponse profileResponseGet = service.getById(profileResponseSaved.getId());
-		
-        assertNotNull(profileResponseGet);
-        assertEquals(profileResponseSaved.getId(), profileResponseGet.getId());
-        assertArrayEquals(profileResponseSaved.getRoles().toArray(), profileResponseGet.getRoles().toArray());
+        assertEquals(profileResponseSaved.getDescription(), profileResponseGet.getDescription());
+        assertEquals(profileResponseSaved.getFlAdmin(), profileResponseGet.getFlAdmin());
+        assertEquals(profileResponseSaved.getName(), profileResponseGet.getName());
+        assertEquals(profileResponseSaved.getStatus(), profileResponseGet.getStatus());
+        assertTrue(profileResponseSaved.getRoles().size() == profileResponseGet.getRoles().size());
     }
 
 

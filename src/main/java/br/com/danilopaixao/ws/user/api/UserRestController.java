@@ -64,7 +64,7 @@ public class UserRestController {
     		@PathVariable(value = "id", required = true) final Long id ,
     		@RequestBody(required = true) final UserRequest user) {
 		user.setId(id);
-		return this.service.save(user);
+		return this.service.save(id, user);
     }
 	
 	@ApiOperation("Endpoint to inative a User")

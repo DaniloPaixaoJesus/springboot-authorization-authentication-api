@@ -60,22 +60,28 @@ class RoleServiceImpl implements RoleService {
 	
 	public static final Function<RoleRequest, Role> mapRoleRequestToRole = roleRequest ->
 		Optional.ofNullable(roleRequest)
-				.map(role -> Role.builder()
-						.id(roleRequest.getId())
-						.name(roleRequest.getName())
-						.description(roleRequest.getDescription())
-						.status(roleRequest.getStatus())
-						.profiles(roleRequest.getProfiles()
-								.stream()
-								.map(p -> Profile.builder()
-											.id(p.getId())
-											.name(p.getName())
-											.description(p.getDescription())
-											.status(p.getStatus())
-											.build()
-								).collect(Collectors.toList()))
-						.build())
-				.orElse(null);
+				.map(role -> { 
+						Role roleTmp = Role.builder()
+								//.id(roleRequest.getId())
+								.name(roleRequest.getName())
+								.description(roleRequest.getDescription())
+								.status(roleRequest.getStatus())
+								.profiles(roleRequest.getProfiles()
+										.stream()
+										.map(p -> {
+												Profile profileTmp = Profile.builder()
+														//.id(p.getId())
+														.name(p.getName())
+														.description(p.getDescription())
+														.status(p.getStatus())
+														.build();
+												profileTmp.setId(p.getId());
+												return profileTmp; 
+											}).collect(Collectors.toList()))
+								.build();
+						roleTmp.setId(roleRequest.getId());
+						return roleTmp; 
+				}).orElse(null);
 	
 	public static final Function<Role, RoleResponse> mapRoleToRoleResponse = role ->
 		Optional.ofNullable(role)
