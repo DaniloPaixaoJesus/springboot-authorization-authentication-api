@@ -20,7 +20,7 @@ public interface ProfileService {
 	
 
 	public static final Function<ProfileRequest, Profile> mapProfileRequestToProfile = profileRequest ->
-	Optional.ofNullable(profileRequest)
+		Optional.ofNullable(profileRequest)
 			.map(p -> {
 					Profile profileTmp = Profile.builder()
 							//.id(profileRequest.getId())
@@ -37,6 +37,7 @@ public interface ProfileService {
 												.description(r.getDescription())
 												.status(r.getStatus())
 												.build();
+												roleTmp.setId(r.getId());
 												return roleTmp;
 											}).collect(Collectors.toList())
 							).build();

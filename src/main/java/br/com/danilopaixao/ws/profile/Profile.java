@@ -51,7 +51,7 @@ public class Profile extends BaseEntity<Long> implements Serializable{
 //	@ManyToMany(mappedBy = "profiles")
 //    private List<User> users = new ArrayList<User>();
 	
-	@ManyToMany(cascade = { CascadeType.MERGE })
+	@ManyToMany(cascade = { CascadeType.ALL })
 	@JoinTable(
 			schema = ContantsUtil.DB_SCHEMA,
 			name = "role_profile",

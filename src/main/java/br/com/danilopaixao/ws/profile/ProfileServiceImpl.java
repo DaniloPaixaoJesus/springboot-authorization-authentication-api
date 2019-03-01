@@ -34,24 +34,25 @@ class ProfileServiceImpl implements ProfileService {
 	@Override
 	public ProfileResponse save(Long id, ProfileRequest profileRequest) {
 		log.info("save profile => " + profileRequest);
-		Profile profile = this.repository.findOne(profileRequest.getId());
-		profile.setDescription(profileRequest.getDescription());
-		profile.setFlAdmin(profileRequest.getFlAdmin());
-		profile.setName(profileRequest.getName());
-		profile.setStatus(profileRequest.getStatus());
-		profile.setRoles(profileRequest.getRoles()
-				.stream()
-				.map(r -> { Role roleTmp = Role.builder()
-								//.id(p.getId())
-								.name(r.getName())
-								.description(r.getDescription())
-								.status(r.getStatus())
-								.build();
-							roleTmp.setId(r.getId());
-							return roleTmp;
-					}).collect(Collectors.toList())
-				);
+//		Profile profile = this.repository.findOne(profileRequest.getId());
+//		profile.setDescription(profileRequest.getDescription());
+//		profile.setFlAdmin(profileRequest.getFlAdmin());
+//		profile.setName(profileRequest.getName());
+//		profile.setStatus(profileRequest.getStatus());
+//		profile.setRoles(profileRequest.getRoles()
+//				.stream()
+//				.map(r -> { Role roleTmp = Role.builder()
+//								//.id(p.getId())
+//								.name(r.getName())
+//								.description(r.getDescription())
+//								.status(r.getStatus())
+//								.build();
+//							roleTmp.setId(r.getId());
+//							return roleTmp;
+//					}).collect(Collectors.toList())
+//				);
 		
+		Profile profile = Optional.ofNullable(profileRequest).map(mapProfileRequestToProfile).orElse(null);
 		this.repository.save(profile);
 		return Optional.ofNullable(profile).map(mapProfileToProfileResponse).orElse(null);
 		
