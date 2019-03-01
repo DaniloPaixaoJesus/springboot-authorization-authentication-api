@@ -1,6 +1,7 @@
 package br.com.danilopaixao.ws.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -20,7 +21,7 @@ public class UserResponse implements Serializable{
 	private Long id;
 	private String name;
 	private String login;
-	private List<ProfileResponse> profiles;
+	private List<ProfileResponse> profiles = new ArrayList<ProfileResponse>();
 	private UserStatusEnum status;
 	
 	@JsonCreator

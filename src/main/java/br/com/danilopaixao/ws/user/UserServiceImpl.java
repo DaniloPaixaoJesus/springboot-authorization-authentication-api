@@ -3,6 +3,7 @@ package br.com.danilopaixao.ws.user;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,31 @@ class UserServiceImpl implements UserService {
 	public UserResponse save(UserRequest userRequest) {
 		log.info("save user => " + userRequest);
 		User user = Optional.ofNullable(userRequest).map(mapUserRequestToUser).orElse(null);
-		this.repository.save(user);
+		user = this.repository.save(user);
+		return Optional.ofNullable(user).map(mapUserToUserResponse).orElse(null);
+	}
+	
+	@Override
+	public UserResponse save(Long id, UserRequest userRequest) {
+		log.info("save user => " + userRequest);
+		User user = this.repository.getOne(id);
+		user.setName(userRequest.getName());
+		user.setLogin(userRequest.getLogin());
+		user.setPassword(userRequest.getPassword());
+		user.setStatus(userRequest.getStatus());
+		user.setProfiles(userRequest.getProfiles()
+							.stream()
+							.map(p -> Profile.builder()
+											.id(p.getId())
+											.name(p.getName())
+											.description(p.getDescription())
+											.status(p.getStatus())
+											.flAdmin(p.getFlAdmin())
+											.build()
+								).collect(Collectors.toList())
+							);
+		//userIni.setProfiles(userRequest.getProfiles());
+		user = this.repository.save(user);
 		return Optional.ofNullable(user).map(mapUserToUserResponse).orElse(null);
 	}
 	
@@ -59,8 +84,9 @@ class UserServiceImpl implements UserService {
 	
 	public static final Function<UserRequest, User> mapUserRequestToUser = userRequest ->
 		Optional.ofNullable(userRequest)
-			.map(user -> User.builder()
-					.id(user.getId())
+			.map(user -> { 
+					User usertmp = User.builder()
+					//.id(user.getId())
 					.name(user.getName())
 					.login(user.getLogin())
 					.password(user.getPassword())
@@ -75,7 +101,11 @@ class UserServiceImpl implements UserService {
 										.flAdmin(p.getFlAdmin())
 										.build()
 							).collect(Collectors.toList()))
-					.build()
+					.build();
+					usertmp.setId(user.getId());
+					return usertmp;
+			}
+					
 			).orElse(null);
 	
 	public static final Function<User, UserResponse> mapUserToUserResponse = user ->

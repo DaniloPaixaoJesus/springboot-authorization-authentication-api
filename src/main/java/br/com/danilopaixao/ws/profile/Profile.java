@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import br.com.danilopaixao.ws.core.BaseEntity;
 import br.com.danilopaixao.ws.core.ContantsUtil;
 import br.com.danilopaixao.ws.role.Role;
 import br.com.danilopaixao.ws.user.User;
@@ -31,7 +32,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="profile", schema = ContantsUtil.DB_SCHEMA)
-public class Profile implements Serializable{
+public class Profile /*extends BaseEntity<Long>*/ implements Serializable{
 
 	/**
 	 * 

@@ -34,6 +34,24 @@ databaseChangeLog:
                   type: varchar(15)
                   constraints:
                     nullable: false
+              - column:
+                  name: version
+                  type: bigint
+              - column:
+                  name: created_by
+                  type: varchar(50)
+              - column:
+                  name: updated_by
+                  type: varchar(50)
+              - column:
+                  name: created_at
+                  type: timestamp
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: removed_at
+                  type: timestamp
                     
   - changeSet:
       id: create-profile-20190214
@@ -70,6 +88,24 @@ databaseChangeLog:
                   type: varchar(15)
                   constraints:
                     nullable: false
+              - column:
+                  name: version
+                  type: bigint
+              - column:
+                  name: created_by
+                  type: varchar(50)
+              - column:
+                  name: updated_by
+                  type: varchar(50)
+              - column:
+                  name: created_at
+                  type: timestamp
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: removed_at
+                  type: timestamp
   - changeSet:
       id: create-role-20190214
       author: danilo.paixao
@@ -100,6 +136,24 @@ databaseChangeLog:
                   type: varchar(15)
                   constraints:
                     nullable: false
+              - column:
+                  name: version
+                  type: bigint
+              - column:
+                  name: created_by
+                  type: varchar(50)
+              - column:
+                  name: updated_by
+                  type: varchar(50)
+              - column:
+                  name: created_at
+                  type: timestamp
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: removed_at
+                  type: timestamp
   - changeSet:
       id: create-profile-user-20190227
       author: danilo.paixao
@@ -181,146 +235,3 @@ databaseChangeLog:
             schemaName: myapp
             addPrimaryKey: role_profile
             constraintName: pk_role_profile
-            
-  - changeSet:
-      id: create-master-20180826
-      author: danilo.paixao
-      changes:
-        - createTable: 
-            schemaName: myapp
-            tableName: master
-            columns:
-              - column:
-                  name: id
-                  type: bigint
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    autoIncrement: true
-              - column:
-                  name: code
-                  type: varchar(100)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: summary
-                  type: varchar(55)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: description
-                  type: varchar(500)
-                  constraints:
-                    nullable: false
-
-  - changeSet:
-      id: create-detail--20180826
-      author: danilo.paixao
-      changes:
-        - createTable: 
-            schemaName: myapp
-            tableName: detail
-            columns:
-              - column:
-                  name: id
-                  type: bigint
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    autoIncrement: true
-              - column:
-                  name: id_master
-                  type: bigint
-                  constraints:
-                    nullable: false
-              - column:
-                  name: description
-                  type: varchar(255)
-                  constraints:
-                    nullable: true
-        - addForeignKeyConstraint: 
-            constraintName: fk_detail_master_id_master
-            baseColumnNames: id_master
-            baseTableName: detail
-            baseTableSchemaName: myapp
-            referencedColumnNames: id
-            referencedTableName: master
-            referencedTableSchemaName: myapp
-            
-  - changeSet:
-      id: initLoad-user
-      author: danilo.paixao
-      changes:
-        - loadData:
-            encoding: UTF-8
-            file: db/changelog/v1/user.csv
-            schemaName: public
-            separator: ","
-            schemaName: myapp
-            tableName: user
-  - changeSet:
-      id: initLoad-profile
-      author: danilo.paixao
-      changes:
-        - loadData:
-            encoding: UTF-8
-            file: db/changelog/v1/profile.csv
-            schemaName: public
-            separator: ","
-            schemaName: myapp
-            tableName: profile
-  - changeSet:
-      id: initLoad-role
-      author: danilo.paixao
-      changes:
-        - loadData:
-            encoding: UTF-8
-            file: db/changelog/v1/role.csv
-            schemaName: public
-            separator: ","
-            schemaName: myapp
-            tableName: role
-  - changeSet:
-      id: initLoad-role-profile
-      author: danilo.paixao
-      changes:
-        - loadData:
-            encoding: UTF-8
-            file: db/changelog/v1/role_profile.csv
-            schemaName: public
-            separator: ","
-            schemaName: myapp
-            tableName: role_profile
-  - changeSet:
-      id: initLoad-profile-user
-      author: danilo.paixao
-      changes:
-        - loadData:
-            encoding: UTF-8
-            file: db/changelog/v1/profile_user.csv
-            schemaName: public
-            separator: ","
-            schemaName: myapp
-            tableName: profile_user
-  - changeSet:
-      id: initLoad-master
-      author: danilo.paixao
-      changes:
-        - loadData:
-            encoding: UTF-8
-            file: db/changelog/v1/master.csv
-            schemaName: public
-            separator: ","
-            schemaName: myapp
-            tableName: master
-  - changeSet:
-      id: initLoad-detail
-      author: danilo.paixao
-      changes:
-        - loadData:
-            encoding: UTF-8
-            file: db/changelog/v1/detail.csv
-            schemaName: public
-            separator: ","
-            schemaName: myapp
-            tableName: detail

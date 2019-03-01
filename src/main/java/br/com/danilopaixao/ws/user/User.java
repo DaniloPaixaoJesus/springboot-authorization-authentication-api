@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import br.com.danilopaixao.ws.core.BaseEntity;
 import br.com.danilopaixao.ws.core.ContantsUtil;
 import br.com.danilopaixao.ws.profile.Profile;
 import lombok.AllArgsConstructor;
@@ -29,17 +30,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="user", schema = ContantsUtil.DB_SCHEMA)
-public class User implements Serializable{
+public class User extends BaseEntity<Long> implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4835910182046216415L;
-	
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private static final long serialVersionUID = -206160057837677423L;
 
 	@Column(name = "name")
 	private String name;
