@@ -49,4 +49,12 @@ public class Role extends BaseEntity<Long> implements Serializable{
 	@ManyToMany(mappedBy = "roles")
     private List<Profile> profiles = new ArrayList<Profile>();
 	
+	public List<Profile> getProfiles(){
+		if(profiles ==null) {
+			return new ArrayList<Profile>();
+		}else {
+			return profiles;
+		}
+	}
+	
 }

@@ -24,6 +24,7 @@ import br.com.danilopaixao.ws.profile.ProfileResponse;
 import br.com.danilopaixao.ws.profile.ProfileService;
 import br.com.danilopaixao.ws.profile.ProfileStatusEnum;
 import br.com.danilopaixao.ws.role.RoleRequest;
+import br.com.danilopaixao.ws.role.RoleResponse;
 import br.com.danilopaixao.ws.role.RoleService;
 import br.com.danilopaixao.ws.role.RoleStatusEnum;
 
@@ -69,8 +70,8 @@ public class ProfileServiceTest {
 			roleRequest.setName(ROLE_NAME);
 			roleRequest.setDescription("");
 			roleRequest.setStatus(RoleStatusEnum.ATIVO);
-			roleRequest.setProfiles(new ArrayList<ProfileRequest>());
-			roleService.save(roleRequest);
+			RoleResponse roleResponse = roleService.save(roleRequest);
+			roleRequest.setId(roleResponse.getId());
 		}
 		
     }

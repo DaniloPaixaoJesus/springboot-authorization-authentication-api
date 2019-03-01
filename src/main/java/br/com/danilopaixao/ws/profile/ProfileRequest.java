@@ -43,4 +43,12 @@ public class ProfileRequest implements Serializable{
 		this.roles = roles;
 		this.status = status;
 	}
+	
+	public List<RoleRequest> getRoles(){
+		if(this.roles == null) {
+			return new ArrayList<RoleRequest>();
+		}else {
+			return this.roles;
+		}
+	}
 }

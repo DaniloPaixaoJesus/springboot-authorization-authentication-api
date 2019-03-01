@@ -1,6 +1,7 @@
 package br.com.danilopaixao.ws.role;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -34,6 +35,14 @@ public class RoleResponse implements Serializable{
 		this.description = description;
 		this.status = status;
 		this.profiles = profiles;
+	}
+	
+	public List<ProfileResponse> getProfiles(){
+		if(profiles == null) {
+			return new ArrayList<ProfileResponse>();
+		}else {
+			return profiles;
+		}
 	}
 	
 }

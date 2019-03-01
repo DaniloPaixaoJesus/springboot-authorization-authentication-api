@@ -1,8 +1,6 @@
 package br.com.danilopaixao.test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -73,7 +71,6 @@ public class RoleServiceTest {
 			roleRequest.setName(ROLE_NAME);
 			roleRequest.setDescription("");
 			roleRequest.setStatus(RoleStatusEnum.ATIVO);
-			roleRequest.setProfiles(new ArrayList<ProfileRequest>());
 			RoleResponse roleResponse = service.save(roleRequest);
 			roleRequest.setId(roleResponse.getId());
 		}
@@ -103,7 +100,6 @@ public class RoleServiceTest {
 		roleRequest.setName("name NEW role - junit running");
 		roleRequest.setDescription("description NEW role - junit running");
 		roleRequest.setStatus(RoleStatusEnum.ATIVO);
-		roleRequest.setProfiles(new ArrayList<ProfileRequest>());
 		
 		RoleResponse roleResponse = service.save(roleRequest);
 		
@@ -125,8 +121,6 @@ public class RoleServiceTest {
 		roleRequest.setName("name NEW role - junit running");
 		roleRequest.setDescription("description NEW role - junit running");
 		roleRequest.setStatus(RoleStatusEnum.ATIVO);
-		roleRequest.setProfiles(new ArrayList<ProfileRequest>());
-		roleRequest.getProfiles().add(profileRequest);
 		
 		RoleResponse roleResponse = service.save(roleRequest);
 		
@@ -147,7 +141,6 @@ public class RoleServiceTest {
 		newRoleRequest.setName("name role - UPDATED - junit running");
 		newRoleRequest.setDescription("description role - UPDATED - junit running");
 		newRoleRequest.setStatus(RoleStatusEnum.ATIVO);
-		newRoleRequest.setProfiles(new ArrayList<ProfileRequest>());
 		
 		RoleResponse roleResponse = service.save(newRoleRequest);
 		
@@ -170,9 +163,6 @@ public class RoleServiceTest {
 		newRoleRequest.setName("name role - UPDATED 2 - junit running");
 		newRoleRequest.setDescription("description role - UPDATED 2 - junit running");
 		newRoleRequest.setStatus(RoleStatusEnum.ATIVO);
-		newRoleRequest.setProfiles(new ArrayList<ProfileRequest>());
-		
-		newRoleRequest.getProfiles().add(this.profileRequest);
 		
 		RoleResponse roleResponse = service.save(newRoleRequest);
 		
@@ -186,7 +176,6 @@ public class RoleServiceTest {
         assertNotEquals(role.getDescription(), this.roleRequest.getDescription());
         assertEquals(role.getDescription(), roleResponse.getDescription());
         assertTrue(role.getProfiles().size() == roleResponse.getProfiles().size());
-        assertFalse(this.roleRequest.getProfiles().size() == roleResponse.getProfiles().size());
     }
 
 
