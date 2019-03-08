@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import br.com.danilopaixao.ws.core.MoreInfo;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -20,13 +22,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableScheduling
 @SpringBootApplication
-public class APIRestApplication {
+public class APIRestApplication extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		SpringApplication.run(APIRestApplication.class, args)
 				.getBean(MoreInfo.class)
 				.info();
 	}
+	
+	@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(APIRestApplication.class);
+    }
+
 
 	@Bean
 	public MoreInfo moreInfo() {
