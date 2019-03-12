@@ -46,7 +46,7 @@ class UserServiceImpl implements UserService {
 		final User user = this.repository.findOne(id);
 		user.setName(userRequest.getName());
 		user.setLogin(userRequest.getLogin());
-		user.setPassword(userRequest.getPassword());
+		//user.setPassword(userRequest.getPassword());
 		user.setStatus(userRequest.getStatus());
 		user.setProfiles(new ArrayList<Profile>());
 		userRequest.getProfiles().stream().forEach(p -> {
@@ -84,39 +84,4 @@ class UserServiceImpl implements UserService {
 				.map(mapUserToUserResponse).collect(Collectors.toList());		
 	}
 	
-	public static final Function<UserRequest, User> mapUserRequestToUser = userRequest ->
-		Optional.ofNullable(userRequest)
-			.map(user -> { 
-					User usertmp = User.builder()
-					//.id(user.getId())
-					.name(user.getName())
-					.login(user.getLogin())
-					.password(user.getPassword())
-					.status(user.getStatus())
-					.build();
-					usertmp.setId(user.getId());
-					return usertmp;
-			}
-					
-			).orElse(null);
-	
-	public static final Function<User, UserResponse> mapUserToUserResponse = user ->
-		Optional.ofNullable(user)
-				.map( u -> UserResponse.builder()
-						.id(u.getId())
-						.name(u.getName())
-						.login(u.getLogin())
-						.status(u.getStatus())
-						.profiles(u.getProfiles()
-									.stream()
-									.map(p -> ProfileResponse.builder()
-											.id(p.getId())
-											.name(p.getName())
-											.description(p.getDescription())
-											.status(p.getStatus())
-											.flAdmin(p.getFlAdmin())
-											.build()
-								).collect(Collectors.toList()))
-						.build()
-		).orElse(null);
 }
