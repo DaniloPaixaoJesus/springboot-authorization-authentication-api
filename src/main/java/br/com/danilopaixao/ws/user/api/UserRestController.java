@@ -20,6 +20,11 @@ import br.com.danilopaixao.ws.user.UserResponse;
 import br.com.danilopaixao.ws.user.UserService;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * 
+ * @author user
+ *
+ */
 @RestController
 public class UserRestController {
 	

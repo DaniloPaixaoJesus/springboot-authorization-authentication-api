@@ -16,7 +16,11 @@ import br.com.danilopaixao.ws.role.RoleResponse;
 import br.com.danilopaixao.ws.role.RoleService;
 import lombok.extern.slf4j.Slf4j;
 
-
+/**
+ * 
+ * @author user
+ *
+ */
 @Slf4j
 @Service
 @Transactional
@@ -27,6 +31,10 @@ class ProfileServiceImpl implements ProfileService {
 	
 	@Autowired
 	private RoleService roleService; 
+	
+	public void addRole(ProfileRequest profileRequest) {
+		/* TODO: implement method to add role into profile */
+	}
 	
 	@Override
 	public ProfileResponse save(ProfileRequest profileRequest) {

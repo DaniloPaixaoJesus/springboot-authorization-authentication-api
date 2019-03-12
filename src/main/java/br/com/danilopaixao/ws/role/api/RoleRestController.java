@@ -19,6 +19,11 @@ import br.com.danilopaixao.ws.role.RoleRequest;
 import br.com.danilopaixao.ws.role.RoleResponse;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * 
+ * @author user
+ *
+ */
 @RestController
 public class RoleRestController {
 	

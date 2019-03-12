@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,11 @@ import br.com.danilopaixao.ws.profile.ProfileService;
 import lombok.extern.slf4j.Slf4j;
 
 
+/**
+ * Service responsable for manage users
+ * @author user
+ *
+ */
 @Slf4j
 @Service
 @Transactional
@@ -27,6 +34,10 @@ class UserServiceImpl implements UserService {
 	
 	public UserResponse authenticate(String login) {
 		return this.getByLogin(login);
+	}
+	
+	public void addProfile(UserRequest userRequest) {
+		/* TODO: implement method to add profile to user */
 	}
 	
 	@Override
@@ -46,9 +57,14 @@ class UserServiceImpl implements UserService {
 	public UserResponse save(Long id, UserRequest userRequest) {
 		log.info("save user => " + userRequest);
 		final User user = this.repository.findOne(id);
-		user.setName(userRequest.getName());
+		
+		String password = userRequest.getPassword();
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(password);
+		user.setPassword(hashedPassword);
+
 		user.setLogin(userRequest.getLogin());
-		//user.setPassword(userRequest.getPassword());
+		user.setName(userRequest.getName());
 		user.setStatus(userRequest.getStatus());
 		user.setProfiles(new ArrayList<Profile>());
 		userRequest.getProfiles().stream().forEach(p -> {
