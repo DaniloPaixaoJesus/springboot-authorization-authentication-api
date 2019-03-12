@@ -20,6 +20,7 @@ public class UserResponse implements Serializable{
 	private Long id;
 	private String name;
 	private String login;
+	private String password;
 	private List<ProfileResponse> profiles = new ArrayList<ProfileResponse>();
 	private UserStatusEnum status;
 	
@@ -28,11 +29,13 @@ public class UserResponse implements Serializable{
 			@JsonProperty("id") final Long id,
 			@JsonProperty("name") final String name,
 			@JsonProperty("login") final String login,
+			@JsonProperty("password") final String password,
 			@JsonProperty("profiles") final List<ProfileResponse> profiles,
 			@JsonProperty("status") final UserStatusEnum status) {
 		this.id = id;
 		this.name = name;		
 		this.login = login;
+		this.password = password;
 		this.profiles = profiles;
 		this.status = status;
 	}

@@ -60,6 +60,12 @@ class RoleServiceImpl implements RoleService {
 	}
 	
 	@Override
+	public List<RoleResponse>getRoleByLogin(String login) {
+		return this.repository.findByLogin(login).stream()
+				.map(mapRoleToRoleResponse).collect(Collectors.toList());
+	}
+	
+	@Override
 	public List<RoleResponse> getByAllRoles() {
 		return this.repository
 				.findAll()

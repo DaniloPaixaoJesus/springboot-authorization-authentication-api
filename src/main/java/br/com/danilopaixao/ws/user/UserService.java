@@ -18,6 +18,7 @@ public interface UserService {
 	List<UserResponse> getByAllUsers();
 	UserResponse inativeUser(Long id);
 	User getUserById(Long id);
+	UserResponse authenticate(String username);
 	
 	public static final Function<User, User> mapEndodePassword = user ->
 		Optional.ofNullable(user)
@@ -53,6 +54,7 @@ public interface UserService {
 					.name(u.getName())
 					.login(u.getLogin())
 					.status(u.getStatus())
+					.password(u.getPassword())
 					.profiles(u.getProfiles()
 								.stream()
 								.map(p -> ProfileResponse.builder()

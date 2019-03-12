@@ -15,6 +15,7 @@ public interface RoleService {
 	List<RoleResponse> getByAllRoles();
 	RoleResponse inativeRole(Long id);
 	Role getRoleById(Long id);
+	List<RoleResponse> getRoleByLogin(String login);
 
 
 	public static final Function<RoleRequest, Role> mapRoleRequestToRole = roleRequest ->
@@ -49,4 +50,5 @@ public interface RoleService {
 											).collect(Collectors.toList())
 							).build())
 					.orElse(null);
+
 }

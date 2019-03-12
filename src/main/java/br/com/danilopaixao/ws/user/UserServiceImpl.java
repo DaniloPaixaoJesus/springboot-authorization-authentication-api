@@ -3,7 +3,6 @@ package br.com.danilopaixao.ws.user;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.danilopaixao.ws.profile.Profile;
-import br.com.danilopaixao.ws.profile.ProfileResponse;
 import br.com.danilopaixao.ws.profile.ProfileService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +24,10 @@ class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private ProfileService profileService;
+	
+	public UserResponse authenticate(String login) {
+		return this.getByLogin(login);
+	}
 	
 	@Override
 	public UserResponse save(UserRequest userRequest) {
@@ -82,6 +84,11 @@ class UserServiceImpl implements UserService {
 				.findAll()
 				.stream()
 				.map(mapUserToUserResponse).collect(Collectors.toList());		
+	}
+	
+	private UserResponse getByLogin(String login) {
+		User user = this.repository.findByLogin(login);
+		return Optional.ofNullable(user).map(mapUserToUserResponse).orElse(null);
 	}
 	
 }
