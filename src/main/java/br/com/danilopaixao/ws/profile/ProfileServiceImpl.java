@@ -45,12 +45,12 @@ class ProfileServiceImpl implements ProfileService {
 	@Override
 	public ProfileResponse save(Long id, ProfileRequest profileRequest) {
 		log.info("save profile => " + profileRequest);
-		//Profile profile = Optional.ofNullable(profileRequest).map(mapProfileRequestToProfile).orElse(null);
 		Profile profile = this.repository.findOne(profileRequest.getId());
 		profile.setDescription(profileRequest.getDescription());
 		profile.setFlAdmin(profileRequest.getFlAdmin());
 		profile.setName(profileRequest.getName());
 		profile.setStatus(profileRequest.getStatus());
+		profile.setRoles(new ArrayList<Role>());
 		for (RoleRequest r : profileRequest.getRoles()) {
 			Role role = this.roleService.getRoleById(r.getId());
 			profile.getRoles().add(role);

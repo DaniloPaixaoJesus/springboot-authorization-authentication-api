@@ -6,10 +6,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import br.com.danilopaixao.ws.profile.ProfileResponse;
-import br.com.danilopaixao.ws.profile.ProfileService;
 
 public interface RoleService {
 
+	RoleResponse save(Long id, RoleRequest role);
 	RoleResponse save(RoleRequest role);
 	RoleResponse getById(Long id);
 	List<RoleResponse> getByAllRoles();

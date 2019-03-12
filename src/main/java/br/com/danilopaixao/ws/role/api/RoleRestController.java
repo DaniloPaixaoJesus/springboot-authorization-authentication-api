@@ -35,7 +35,7 @@ public class RoleRestController {
 	
 	@ApiOperation("Endpoint to get ALL Role")
 	@GetMapping(value = "/api/v1/roles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody List<RoleResponse> getAllRoles() {
 		return this.service.getByAllRoles();
     }
@@ -50,17 +50,17 @@ public class RoleRestController {
 	
 	@ApiOperation("Endpoint to update a Role")
 	@PostMapping(value = "/api/v1/roles/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody RoleResponse upDateRole(
     		@PathVariable(value = "id", required = true) final Long id ,
     		@RequestBody(required = true) final RoleRequest role) {
 		role.setId(id);
-		return this.service.save(role);
+		return this.service.save(id, role);
     }
 	
 	@ApiOperation("Endpoint to inative a Role")
 	@DeleteMapping(value = "/api/v1/roles/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody RoleResponse cancelRole(
     		@PathVariable(value = "id", required = true) final Long id) {
 		return this.service.inativeRole(id);

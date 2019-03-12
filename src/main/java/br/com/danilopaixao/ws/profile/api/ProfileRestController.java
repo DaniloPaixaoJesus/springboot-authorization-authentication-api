@@ -35,7 +35,7 @@ public class ProfileRestController {
 	
 	@ApiOperation("Endpoint to get ALL Profile")
 	@GetMapping(value = "/api/v1/profiles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody List<ProfileResponse> getAllProfiles() {
 		return this.service.getByAllProfiles();
     }
@@ -50,7 +50,7 @@ public class ProfileRestController {
 	
 	@ApiOperation("Endpoint to update a Profile")
 	@PostMapping(value = "/api/v1/profiles/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody ProfileResponse upDateProfile(
     		@PathVariable(value = "id", required = true) final Long id ,
     		@RequestBody(required = true) final ProfileRequest profile) {
@@ -60,7 +60,7 @@ public class ProfileRestController {
 	
 	@ApiOperation("Endpoint to inative a Profile")
 	@DeleteMapping(value = "/api/v1/profiles/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody ProfileResponse cancelProfile(
     		@PathVariable(value = "id", required = true) final Long id) {
 		return this.service.inativeProfile(id);
