@@ -7,11 +7,10 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import br.com.danilopaixao.ws.profile.ProfileRequest;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import br.com.danilopaixao.ws.profile.ProfileRequest;
 
 @Builder
 @Data
@@ -26,7 +25,7 @@ public class UserRequest implements Serializable{
 	private String name;
 	private String login;
 	private String password;
-	private List<ProfileRequest> profiles;
+	private List<ProfileRequest> profiles = new ArrayList<ProfileRequest>();
 	private UserStatusEnum status;
 	
 	@JsonCreator
@@ -43,5 +42,13 @@ public class UserRequest implements Serializable{
 		this.password = password;
 		this.profiles = profiles;
 		this.status = status;
+	}
+	
+	public List<ProfileRequest> getProfiles(){
+		if(this.profiles == null) {
+			return new ArrayList<ProfileRequest>();
+		}else {
+			return this.profiles;
+		}
 	}
 }

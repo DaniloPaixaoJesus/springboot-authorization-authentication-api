@@ -7,10 +7,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import br.com.danilopaixao.ws.profile.ProfileResponse;
 import lombok.Builder;
 import lombok.Data;
-
-import br.com.danilopaixao.ws.profile.ProfileResponse;
 
 @Data
 @Builder
@@ -38,4 +37,11 @@ public class UserResponse implements Serializable{
 		this.status = status;
 	}
 	
+	public List<ProfileResponse> getProfiles(){
+		if(this.profiles == null) {
+			return new ArrayList<ProfileResponse>();
+		}else {
+			return this.profiles;
+		}
+	}
 }

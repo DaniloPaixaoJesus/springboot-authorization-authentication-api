@@ -1,5 +1,6 @@
 package br.com.danilopaixao.ws.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.danilopaixao.ws.profile.Profile;
 import br.com.danilopaixao.ws.profile.ProfileResponse;
+import br.com.danilopaixao.ws.profile.ProfileService;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -22,39 +24,36 @@ class UserServiceImpl implements UserService {
 	@Autowired
     private UserRepository repository;
 	
+	@Autowired
+	private ProfileService profileService;
+	
 	@Override
 	public UserResponse save(UserRequest userRequest) {
 		log.info("save user => " + userRequest);
-		User user = Optional.ofNullable(userRequest).map(mapUserRequestToUser).orElse(null);
-		user = this.repository.save(user);
+		final User user = Optional.ofNullable(userRequest).map(mapUserRequestToUser).orElse(null);
+		user.setProfiles(new ArrayList<Profile>());
+		userRequest.getProfiles().stream().forEach(p -> {
+			Profile profile = profileService.getUserById(p.getId());
+			user.getProfiles().add(profile);
+		});
+		this.repository.save(user);
 		return Optional.ofNullable(user).map(mapUserToUserResponse).orElse(null);
 	}
 	
 	@Override
 	public UserResponse save(Long id, UserRequest userRequest) {
 		log.info("save user => " + userRequest);
-		User user = this.repository.getOne(id);
+		final User user = this.repository.findOne(id);
 		user.setName(userRequest.getName());
 		user.setLogin(userRequest.getLogin());
 		user.setPassword(userRequest.getPassword());
 		user.setStatus(userRequest.getStatus());
-		user.setProfiles(userRequest.getProfiles()
-							.stream()
-							.map(p -> { 
-										Profile profileTmp = Profile.builder()
-												//.id(p.getId())
-												.name(p.getName())
-												.description(p.getDescription())
-												.status(p.getStatus())
-												.flAdmin(p.getFlAdmin())
-												.build();
-										profileTmp.setId(p.getId());
-										return profileTmp;
-									}
-								).collect(Collectors.toList())
-							);
-		//userIni.setProfiles(userRequest.getProfiles());
-		user = this.repository.save(user);
+		user.setProfiles(new ArrayList<Profile>());
+		userRequest.getProfiles().stream().forEach(p -> {
+			Profile profile = profileService.getUserById(p.getId());
+			user.getProfiles().add(profile);
+		});
+		this.repository.save(user);
 		return Optional.ofNullable(user).map(mapUserToUserResponse).orElse(null);
 	}
 	
@@ -94,20 +93,6 @@ class UserServiceImpl implements UserService {
 					.login(user.getLogin())
 					.password(user.getPassword())
 					.status(user.getStatus())
-					.profiles(user.getProfiles()
-								.stream()
-								.map(p -> { 
-									Profile profileTmp = Profile.builder()
-											//.id(p.getId())
-											.name(p.getName())
-											.description(p.getDescription())
-											.status(p.getStatus())
-											.flAdmin(p.getFlAdmin())
-											.build();
-									profileTmp.setId(p.getId());
-									return profileTmp;
-								}
-							).collect(Collectors.toList()))
 					.build();
 					usertmp.setId(user.getId());
 					return usertmp;

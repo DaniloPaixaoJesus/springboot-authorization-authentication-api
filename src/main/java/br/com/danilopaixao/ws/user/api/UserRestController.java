@@ -44,7 +44,7 @@ public class UserRestController {
 	@PreAuthorize("hasRole('ROLE_AD')")
 	@ApiOperation("Endpoint to get ALL User")
 	@GetMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody List<UserResponse> getAllUsers() {
 		return this.service.getByAllUsers();
     }
@@ -59,7 +59,7 @@ public class UserRestController {
 	
 	@ApiOperation("Endpoint to update a User")
 	@PostMapping(value = "/api/v1/users/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody UserResponse upDateUser(
     		@PathVariable(value = "id", required = true) final Long id ,
     		@RequestBody(required = true) final UserRequest user) {
@@ -69,7 +69,7 @@ public class UserRestController {
 	
 	@ApiOperation("Endpoint to inative a User")
 	@DeleteMapping(value = "/api/v1/users/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody UserResponse cancelUser(
     		@PathVariable(value = "id", required = true) final Long id) {
 		return this.service.inativeUser(id);
