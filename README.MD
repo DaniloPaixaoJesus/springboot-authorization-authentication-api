@@ -16,3 +16,5 @@ Maven, JDK Java 8, Docker, Docker-Compose, Lombok
 
 ## Prerequisites for Deploy and Build ## 
 Docker, Docker-Compose
+
+AWS Env running on http://34.229.135.40:8080/swagger-ui.html
