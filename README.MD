@@ -1,16 +1,18 @@
 
-CRUD completo de usuários, tela responsiva, API REST
-API REST para CRUD da entidade "Master" e "Detail"
 
-## Algumas considerações a respeito de algumas decisões arquiteturais:
+complete REST API for authentication and authorization
+JWF token 
 
-Package-by-feature -> os pacotes estão organizados por FEATURES ao invés de LAYERS
+SpringBoot -> java framework with the Convention over Configuration philosophy. Facilitates the configuration of the application and execution in the DEV environment since this one brings an embedded server.
 
-SpringBoot -> framework java com a filosofia Convention over Configuration. Facilita a configuração da aplicação e a execução no ambiente DEV. Uma vez que este traz um servidor embarcado.
+Liquibase -> Keeps history of all changes to the database structure. Facilitates rollback of releases, facility to generate load script.
 
-Liquibase -> Mantém histórico de todas as alterações da estrutura do banco de dados. Facilita o "rollback" de releases, facilidade para gerar script de carga.
+LomBok ->  excellent for abstracting some design patterns, as well as speeding up the development and writing of code.
 
-LomBok ->  excelente para abstracao de implementação de alguns padrões de projeto, além de acelerar o desenvolvimento e escrita do código.
+Swwager -> framework for REST API documentation.
 
-Swwager -> framework para documentação de API REST.
-http://localhost:8080/swagger-ui.html -> API
+## Prerequisites for Java Dev ##
+Maven, JDK Java 8, Docker, Docker-Compose, Lombok
+
+## Prerequisites for Deploy and Build ## 
+Docker, Docker-Compose
