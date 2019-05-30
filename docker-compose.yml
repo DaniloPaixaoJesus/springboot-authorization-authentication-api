@@ -6,7 +6,7 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
             - POSTGRES_DB=dbname
-            - POSTGRES_SCHEMA=myapp
+            - POSTGRES_SCHEMA=public
         container_name: postgres
         ports:
             - '5432:5432'

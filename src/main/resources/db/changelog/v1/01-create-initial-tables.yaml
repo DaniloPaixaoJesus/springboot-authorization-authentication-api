@@ -4,7 +4,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
-            schemaName: myapp
+            schemaName: public
             tableName: user
             columns:
               - column:
@@ -58,7 +58,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
-            schemaName: myapp
+            schemaName: public
             tableName: profile
             columns:
               - column:
@@ -111,7 +111,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
-            schemaName: myapp
+            schemaName: public
             tableName: role
             columns:
               - column:
@@ -159,7 +159,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
-            schemaName: myapp
+            schemaName: public
             tableName: profile_user
             columns:
               - column:
@@ -176,22 +176,22 @@ databaseChangeLog:
             constraintName: fk_profile_user_id_user
             baseColumnNames: id_user
             baseTableName: profile_user
-            baseTableSchemaName: myapp
+            baseTableSchemaName: public
             referencedColumnNames: id
             referencedTableName: user
-            referencedTableSchemaName: myapp
+            referencedTableSchemaName: public
         - addForeignKeyConstraint: 
             constraintName: fk_profile_user_id_profile
             baseColumnNames: id_profile
             baseTableName: profile_user
-            baseTableSchemaName: myapp
+            baseTableSchemaName: public
             referencedColumnNames: id
             referencedTableName: profile
-            referencedTableSchemaName: myapp
+            referencedTableSchemaName: public
         - addPrimaryKey: 
             tableName: profile_user
             columnNames: id_profile, id_user
-            schemaName: myapp
+            schemaName: public
             addPrimaryKey: profile_user
             constraintName: pk_profile_user
 
@@ -200,7 +200,7 @@ databaseChangeLog:
       author: danilo.paixao
       changes:
         - createTable: 
-            schemaName: myapp
+            schemaName: public
             tableName: role_profile
             columns:
               - column:
@@ -217,21 +217,21 @@ databaseChangeLog:
             constraintName: fk_role_profile_id_role
             baseColumnNames: id_role
             baseTableName: role_profile
-            baseTableSchemaName: myapp
+            baseTableSchemaName: public
             referencedColumnNames: id
             referencedTableName: role
-            referencedTableSchemaName: myapp
+            referencedTableSchemaName: public
         - addForeignKeyConstraint: 
             constraintName: fk_role_profile_id_profile
             baseColumnNames: id_profile
             baseTableName: role_profile
-            baseTableSchemaName: myapp
+            baseTableSchemaName: public
             referencedColumnNames: id
             referencedTableName: profile
-            referencedTableSchemaName: myapp
+            referencedTableSchemaName: public
         - addPrimaryKey: 
             tableName: role_profile
             columnNames: id_role, id_profile
-            schemaName: myapp
+            schemaName: public
             addPrimaryKey: role_profile
             constraintName: pk_role_profile
