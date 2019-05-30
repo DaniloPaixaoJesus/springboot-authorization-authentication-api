@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,8 +40,29 @@ public class InitController {
 	@Autowired
 	private RoleService roleService;
 	
+	@ApiOperation("Endpoint to get ALL Role")
+	@GetMapping(value = "/init/roles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody List<RoleResponse> getAllRoles() {
+		return this.roleService.getByAllRoles();
+    }
+	
+	@ApiOperation("Endpoint to get ALL User")
+	@GetMapping(value = "/init/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody List<UserResponse> getAllUsers() {
+		return this.userService.getByAllUsers();
+    }
+	
+	@ApiOperation("Endpoint to get ALL Profile")
+	@GetMapping(value = "/init/profiles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody List<ProfileResponse> getAllProfiles() {
+		return this.profileService.getByAllProfiles();
+    }
+	
 	@ApiOperation("Endpoint to init Users")
-	@PostMapping(value = "/init/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value = "/init/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody UserResponse initUsers() {
 		

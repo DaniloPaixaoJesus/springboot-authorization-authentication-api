@@ -61,7 +61,8 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 				.addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 			// authorization requests config
 			.authorizeRequests()
-				.antMatchers("/api/v1/**").hasRole("ADMIN")/*.authenticated()*/
+				//.antMatchers("/api/v1/**").hasRole("ADMIN")/*.authenticated()*/
+				.antMatchers("/api/v1/**").authenticated()
 				.antMatchers(HttpMethod.GET, jwtConfig.getSwaggerUI()).permitAll()  
 				// allow all who are accessing "auth" service
 				.antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()  
