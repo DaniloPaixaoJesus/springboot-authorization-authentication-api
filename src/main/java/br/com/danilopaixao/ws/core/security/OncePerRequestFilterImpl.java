@@ -1,4 +1,4 @@
-package br.com.danilopaixao.ws.core.api.security;
+package br.com.danilopaixao.ws.core.security;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,12 +17,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
-public class JwtTokenAuthenticationFilter extends  OncePerRequestFilter {
+public class OncePerRequestFilterImpl extends  OncePerRequestFilter {
     
-	private final JwtConfig jwtConfig;
+	private final SecurityConfig securityConfig;
 	
-	public JwtTokenAuthenticationFilter(JwtConfig jwtConfig) {
-		this.jwtConfig = jwtConfig;
+	public OncePerRequestFilterImpl(SecurityConfig securityConfig) {
+		this.securityConfig = securityConfig;
 	}
 
 	@Override
@@ -30,10 +30,10 @@ public class JwtTokenAuthenticationFilter extends  OncePerRequestFilter {
 			throws ServletException, IOException {
 		
 		// 1. get the authentication header. Tokens are supposed to be passed in the authentication header
-		String header = request.getHeader(jwtConfig.getHeader());
+		String header = request.getHeader(securityConfig.getHeader());
 		
 		// 2. validate the header and check the prefix
-		if(header == null || !header.startsWith(jwtConfig.getPrefix())) {
+		if(header == null || !header.startsWith(securityConfig.getPrefix())) {
 			chain.doFilter(request, response);  		// If not valid, go to the next filter.
 			return;
 		}
@@ -45,13 +45,13 @@ public class JwtTokenAuthenticationFilter extends  OncePerRequestFilter {
 		// And If user tried to access without access token, then he won't be authenticated and an exception will be thrown.
 		
 		// 3. Get the token
-		String token = header.replace(jwtConfig.getPrefix(), "");
+		String token = header.replace(securityConfig.getPrefix(), "");
 		
 		try {	// exceptions might be thrown in creating the claims if for example the token is expired
 			
 			// 4. Validate the token
 			Claims claims = Jwts.parser()
-					.setSigningKey(jwtConfig.getSecret().getBytes())
+					.setSigningKey(securityConfig.getSecret().getBytes())
 					.parseClaimsJws(token)
 					.getBody();
 			

@@ -1,7 +1,9 @@
 package br.com.danilopaixao.ws.user.api;
 
-import java.util.List;
-
+import br.com.danilopaixao.ws.user.UserRequest;
+import br.com.danilopaixao.ws.user.UserResponse;
+import br.com.danilopaixao.ws.user.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,10 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.danilopaixao.ws.user.UserRequest;
-import br.com.danilopaixao.ws.user.UserResponse;
-import br.com.danilopaixao.ws.user.UserService;
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
 
 /**
  * 
@@ -31,13 +30,6 @@ public class UserRestController {
 	@Autowired
 	private UserService service;
 
-	@ApiOperation("EndPoint to get Test ")
-	@GetMapping(value = "/teste/get", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody UserResponse teste() {
-		return UserResponse.builder().login("teste-login").name("teste-name").build();
-	}
-	
 	@ApiOperation("EndPoint to get User by ID ")
 	@GetMapping(value = "/api/v1/users/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -82,4 +74,3 @@ public class UserRestController {
 	
 
 }
-

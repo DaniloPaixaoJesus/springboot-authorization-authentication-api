@@ -5,12 +5,17 @@ import org.springframework.http.ResponseEntity;
 
 import lombok.Getter;
 
+import java.util.function.Supplier;
+
 @Getter
 public abstract class ProfileException extends RuntimeException {
 	
 	private static final long serialVersionUID = -6634056391059593250L;
 
 	private static final String MSG = "Profile Error status=%d body=%s info=%s";
+
+	public static final Supplier<? extends RuntimeException> invalidArgumentSupplier = () ->
+		new RuntimeException("Invalid argument for profile");
 
 	private final HttpStatus statusCode;
 	private final Object error;

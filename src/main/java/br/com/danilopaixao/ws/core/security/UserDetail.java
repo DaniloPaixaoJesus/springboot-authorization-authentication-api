@@ -1,4 +1,4 @@
-package br.com.danilopaixao.ws.core.api.security;
+package br.com.danilopaixao.ws.core.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserDetailImpl implements UserDetails {
+public class UserDetail implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     private Long id;
@@ -16,16 +16,16 @@ public class UserDetailImpl implements UserDetails {
     private String nome;
     private String role;
 
-    private List<RoleGrantedAuthority> roles = new ArrayList<>();
+    private List<GrantedAuthorityImpl> roles = new ArrayList<>();
     
-    public UserDetailImpl() {}
+    public UserDetail() {}
     
-    public UserDetailImpl(Long id, String username, String password, String role){
+    public UserDetail(Long id, String username, String password, String role){
     	this.id = id;
     	this.email = username;
     	this.senha = password;
     	this.role = role;
-    	this.roles.add(new RoleGrantedAuthority(role));
+    	this.roles.add(new GrantedAuthorityImpl(role));
     }
     
     public Long getId() {
@@ -60,11 +60,11 @@ public class UserDetailImpl implements UserDetails {
         this.nome = nome;
     }
 
-    public List<RoleGrantedAuthority> getRoles() {
+    public List<GrantedAuthorityImpl> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<RoleGrantedAuthority> roles) {
+    public void setRoles(List<GrantedAuthorityImpl> roles) {
         this.roles = roles;
     }
 

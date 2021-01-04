@@ -13,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import br.com.danilopaixao.ws.core.BaseEntity;
-import br.com.danilopaixao.ws.core.ContantsUtil;
+import br.com.danilopaixao.ws.core.DataBaseConstants;
 import br.com.danilopaixao.ws.profile.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="role", schema = ContantsUtil.DB_SCHEMA)
+@Table(name="role", schema = DataBaseConstants.DB_SCHEMA)
 public class Role extends BaseEntity<Long> implements Serializable{
 
 	

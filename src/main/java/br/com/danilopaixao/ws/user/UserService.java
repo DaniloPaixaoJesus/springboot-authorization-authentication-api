@@ -1,14 +1,15 @@
 package br.com.danilopaixao.ws.user;
 
+import br.com.danilopaixao.ws.profile.ProfileResponse;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import br.com.danilopaixao.ws.profile.ProfileResponse;
+import static br.com.danilopaixao.ws.user.UserException.invalidArgumentSupplier;
 
 public interface UserService {
 
@@ -19,6 +20,8 @@ public interface UserService {
 	UserResponse inativeUser(Long id);
 	User getUserById(Long id);
 	UserResponse authenticate(String username);
+
+
 	
 	public static final Function<User, User> mapEndodePassword = user ->
 		Optional.ofNullable(user)
@@ -29,7 +32,7 @@ public interface UserService {
 					u.setPassword(hashedPassword);
 					return u;
 				})
-		.orElse(null);
+		.orElseThrow(invalidArgumentSupplier);
 		
 	public static final Function<UserRequest, User> mapUserRequestToUser = userRequest ->
 	Optional.ofNullable(userRequest)
@@ -45,7 +48,7 @@ public interface UserService {
 				return usertmp;
 		})
 		.map(mapEndodePassword)
-		.orElse(null);
+		.orElseThrow(invalidArgumentSupplier);
 
 	public static final Function<User, UserResponse> mapUserToUserResponse = user ->
 		Optional.ofNullable(user)
@@ -66,6 +69,6 @@ public interface UserService {
 										.build()
 							).collect(Collectors.toList()))
 					.build()
-				).orElse(null);
+				).orElseThrow(invalidArgumentSupplier);
 
 }

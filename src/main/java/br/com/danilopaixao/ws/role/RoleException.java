@@ -5,12 +5,17 @@ import org.springframework.http.ResponseEntity;
 
 import lombok.Getter;
 
+import java.util.function.Supplier;
+
 @Getter
 public abstract class RoleException extends RuntimeException {
 	
 	private static final long serialVersionUID = -6634056391059593250L;
 
 	private static final String MSG = "Role Error status=%d body=%s info=%s";
+
+	public static final Supplier<? extends RuntimeException> invalidArgumentSupplier = () ->
+		new RuntimeException("Invalid argument for role");
 
 	private final HttpStatus statusCode;
 	private final Object error;

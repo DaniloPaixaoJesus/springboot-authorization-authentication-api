@@ -1,16 +1,16 @@
-package br.com.danilopaixao.ws.core.api.security;
+package br.com.danilopaixao.ws.core.security;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public class RoleGrantedAuthority  implements GrantedAuthority {
+public class GrantedAuthorityImpl implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
     
     private String authority;
     
-    public RoleGrantedAuthority(){}
+    public GrantedAuthorityImpl(){}
     
-    public RoleGrantedAuthority(String authority){
+    public GrantedAuthorityImpl(String authority){
     	this.authority = authority;
     }
 

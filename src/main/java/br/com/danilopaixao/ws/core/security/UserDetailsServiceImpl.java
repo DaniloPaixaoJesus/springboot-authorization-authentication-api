@@ -1,7 +1,8 @@
-package br.com.danilopaixao.ws.core.api.security;
+package br.com.danilopaixao.ws.core.security;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,13 +28,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private RoleService roleService;
     
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 		UserResponse appUser = userService.authenticate(username);
 		List<RoleResponse> roles = roleService.getRoleByLogin(username);
 		if(appUser.getLogin().equals(username)) {
-			for (RoleResponse roleResponse : roles) {
-				grantedAuthorities.add(new SimpleGrantedAuthority(roleResponse.getName()));
-			}
+			List<GrantedAuthority> grantedAuthorities =
+				roles.stream()
+					.map(r -> new SimpleGrantedAuthority(r.getName()))
+					.collect(Collectors.toList());
 			return new User(appUser.getLogin(), appUser.getPassword(), grantedAuthorities);
 		}
 		throw new UsernameNotFoundException("Username: " + username + " not found");

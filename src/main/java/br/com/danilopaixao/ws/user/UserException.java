@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 
 import lombok.Getter;
 
+import java.util.function.Supplier;
+
 @Getter
-public abstract class UserException extends RuntimeException {
+public class UserException extends RuntimeException {
 	
 	private static final long serialVersionUID = -6634056391059593250L;
 
@@ -14,6 +16,9 @@ public abstract class UserException extends RuntimeException {
 
 	private final HttpStatus statusCode;
 	private final Object error;
+
+	public static final Supplier<? extends RuntimeException> invalidArgumentSupplier = () ->
+		new RuntimeException("Invalid argument for user");
 
 	public UserException(final String info, final ResponseEntity<?> response) {
 		super(String.format(MSG, response.getStatusCodeValue(), response.getBody(), info));

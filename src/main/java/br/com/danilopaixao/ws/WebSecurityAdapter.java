@@ -1,7 +1,11 @@
-package br.com.danilopaixao.ws.core.api.security;
+package br.com.danilopaixao.ws;
 
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.danilopaixao.ws.core.security.OncePerRequestFilterImpl;
+import br.com.danilopaixao.ws.core.security.SecurityConfig;
+import br.com.danilopaixao.ws.core.security.UsernamePasswordAuthenticationFilterImpl;
+import br.com.danilopaixao.ws.core.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +23,20 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
-	
+public class WebSecurityAdapter extends WebSecurityConfigurerAdapter {
+
+	/**
+	 *  Test authenticate:
+	 *  POST localhost:8080/auth/
+	 *  body: { "login":"user", "password":"123456" }
+	 */
+
+
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
 	
 	@Autowired
-	private JwtConfig jwtConfig;
+	private SecurityConfig securityConfig;
 
 	@Bean
 	public CorsFilter corsFilter() {
@@ -57,15 +68,15 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
 			.and()
 				// Add a filter to validate the tokens with every request
-				.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
-				.addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
+				.addFilter(new UsernamePasswordAuthenticationFilterImpl(authenticationManager(), securityConfig))
+				.addFilterAfter(new OncePerRequestFilterImpl(securityConfig), UsernamePasswordAuthenticationFilter.class)
 			// authorization requests config
 			.authorizeRequests()
-				//.antMatchers("/api/v1/**").hasRole("ADMIN")/*.authenticated()*/
 				.antMatchers("/api/v1/**").authenticated()
-				.antMatchers(HttpMethod.GET, jwtConfig.getSwaggerUI()).permitAll()  
+			//.antMatchers("/api/v1/**").hasRole("ADMIN")/*.authenticated()*/
+			.antMatchers(HttpMethod.GET, securityConfig.getSwaggerUI()).permitAll()
 				// allow all who are accessing "auth" service
-				.antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()  
+				.antMatchers(HttpMethod.POST, securityConfig.getUri()).permitAll()
 				.antMatchers(HttpMethod.POST, "/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/**").permitAll()
 				// must be an admin if trying to access admin area (authentication is also required here)
@@ -82,8 +93,8 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-  	public JwtConfig jwtConfig() {
-    	   return new JwtConfig();
+  	public SecurityConfig jwtConfig() {
+    	   return new SecurityConfig();
   	}
 	
 	@Bean

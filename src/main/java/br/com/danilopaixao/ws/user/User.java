@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import br.com.danilopaixao.ws.core.BaseEntity;
-import br.com.danilopaixao.ws.core.ContantsUtil;
+import br.com.danilopaixao.ws.core.DataBaseConstants;
 import br.com.danilopaixao.ws.profile.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="user", schema = ContantsUtil.DB_SCHEMA)
+@Table(name="user", schema = DataBaseConstants.DB_SCHEMA)
 public class User extends BaseEntity<Long> implements Serializable{
 
 	/**
@@ -49,7 +49,7 @@ public class User extends BaseEntity<Long> implements Serializable{
 	
 	@ManyToMany//(cascade = { CascadeType.MERGE })
 	@JoinTable(
-			schema = ContantsUtil.DB_SCHEMA,
+			schema = DataBaseConstants.DB_SCHEMA,
 			name = "profile_user",
 			joinColumns = { @JoinColumn(name="id_user")},
 			inverseJoinColumns = { @JoinColumn(name="id_profile")}
