@@ -185,7 +185,7 @@
 	</repositories>
 
 	<profiles>
-		<profile>
+		<profileEntity>
 			<id>dev</id>
 			<properties>
 				<environment.deploy>PRD</environment.deploy>
@@ -194,9 +194,9 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 
-		</profile>
+		</profileEntity>
 
-		<profile>
+		<profileEntity>
 			<id>release</id>
 			<!-- Env -->
 			<properties>
@@ -206,7 +206,7 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 
-		</profile>
+		</profileEntity>
 	</profiles>
 
 	<build>
