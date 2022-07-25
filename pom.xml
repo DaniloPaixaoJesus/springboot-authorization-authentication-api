@@ -184,31 +184,6 @@
 		</repository>
 	</repositories>
 
-	<profiles>
-		<profileEntity>
-			<id>dev</id>
-			<properties>
-				<environment.deploy>PRD</environment.deploy>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-
-		</profileEntity>
-
-		<profileEntity>
-			<id>release</id>
-			<!-- Env -->
-			<properties>
-				<environment.deploy>PRD</environment.deploy>
-			</properties>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-		</profileEntity>
-	</profiles>
-
 	<build>
 		<plugins>
 			<plugin>
