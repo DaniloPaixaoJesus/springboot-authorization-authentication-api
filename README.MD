@@ -1,4 +1,3 @@
-Teste
 
 complete REST API for authentication and authorization
 JWF token 
